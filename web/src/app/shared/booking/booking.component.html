@@ -1,0 +1,138 @@
+@let T = t();
+<div class="overlay" [class.open]="bk.isOpen()" (click)="bk.close()" aria-hidden="true"></div>
+
+<aside #panel class="panel" [class.open]="bk.isOpen()" role="dialog" aria-modal="true" [attr.aria-label]="T.title" [attr.aria-hidden]="!bk.isOpen()" tabindex="-1" data-lenis-prevent data-no-reveal>
+  <header class="top">
+    <div style="display:flex;align-items:center;gap:12px">
+      <span class="dg-ping"></span>
+      <span class="ttl">{{ T.title }}</span>
+    </div>
+    <button class="x" (click)="finish()" [attr.aria-label]="T.close"><span></span><span></span></button>
+  </header>
+
+  @if (result() === 'none') {
+    <nav class="steps" aria-label="Progress">
+      @for (s of T.steps; track $index) {
+        <button class="st" [class.on]="$index === step()" [class.done]="$index < step()" (click)="jump($index)" [disabled]="$index >= step()">
+          <i><b [style.transform]="'scaleX(' + ($index < step() ? 1 : $index === step() ? 0.5 : 0) + ')'"></b></i>
+          <span>{{ '0' + ($index + 1) }} {{ s }}</span>
+        </button>
+      }
+    </nav>
+
+    <div class="body">
+      @for (k of [step()]; track k) {
+        <div class="pane" [class.back]="dir() === -1">
+          @switch (k) {
+            @case (0) {
+              <h2>{{ T.s0h }}</h2>
+              <p class="sub">{{ T.s0p }}</p>
+              <div class="chips">
+                @for (o of serviceOptions(); track o.id) {
+                  <button class="chip" [class.on]="services().includes(o.id)" (click)="toggleService(o.id)" [attr.aria-pressed]="services().includes(o.id)"><i></i>{{ o.label }}</button>
+                }
+              </div>
+              <div class="lbl">{{ T.modeH }}</div>
+              <div class="modes">
+                @for (m of modes; track m) {
+                  <button class="mode" [class.on]="mode() === m" (click)="mode.set(m)" [attr.aria-pressed]="mode() === m">
+                    <span class="mi">
+                      @switch (m) {
+                        @case ('site') {<svg viewBox="0 0 24 24"><path d="M12 21s-7-6.1-7-11a7 7 0 1 1 14 0c0 4.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>}
+                        @case ('call') {<svg viewBox="0 0 24 24"><path d="M4 5c0 8.3 6.7 15 15 15l2-3.5-4.5-2-2 2a11 11 0 0 1-5-5l2-2-2-4.5z"/></svg>}
+                        @case ('office') {<svg viewBox="0 0 24 24"><path d="M4 21V5l8-3 8 3v16M9 21v-5h6v5M8 9h2M14 9h2M8 13h2M14 13h2"/></svg>}
+                      }
+                    </span>
+                    <span class="mt"><b>{{ T.modes[m][0] }}</b><small>{{ T.modes[m][1] }}</small></span>
+                  </button>
+                }
+              </div>
+            }
+            @case (1) {
+              <h2>{{ T.s1h }}</h2>
+              <div class="lbl">{{ T.canton }}</div>
+              <div class="chips">
+                @for (c of cantons; track c) {<button class="chip" [class.on]="canton() === c" (click)="canton.set(c)"><i></i>{{ c }}</button>}
+              </div>
+              <label class="field">
+                <span>{{ mode() === 'site' ? T.address : T.addressOpt }}</span>
+                <input [value]="address()" (input)="address.set($any($event.target).value)" [placeholder]="T.addressPh" autocomplete="street-address">
+              </label>
+              <div class="lbl">{{ T.building }}</div>
+              <div class="chips">
+                @for (b of T.buildings; track $index) {<button class="chip" [class.on]="building() === $index" (click)="building.set($index)"><i></i>{{ b }}</button>}
+              </div>
+              <div class="lbl">{{ T.year }}</div>
+              <div class="chips">
+                @for (y of T.years; track $index) {<button class="chip" [class.on]="year() === $index" (click)="year.set($index)"><i></i>{{ y }}</button>}
+              </div>
+            }
+            @case (2) {
+              <h2>{{ T.s2h }}</h2>
+              <p class="sub">{{ T.s2p }}</p>
+              <div class="cal">
+                <div class="cal-h">
+                  <button class="nav" (click)="moveMonth(-1)" [disabled]="!canPrev()" aria-label="Previous month">←</button>
+                  <span>{{ monthLabel() }}</span>
+                  <button class="nav" (click)="moveMonth(1)" [disabled]="!canNext()" aria-label="Next month">→</button>
+                </div>
+                <div class="grid">
+                  @for (d of T.days; track $index) {<span class="dow">{{ d }}</span>}
+                  @for (c of days(); track $index) {
+                    @if (c.n) {
+                      <button class="day" [class.on]="date() === c.iso" [disabled]="!c.ok" (click)="date.set(c.iso)">{{ c.n }}</button>
+                    } @else {<span></span>}
+                  }
+                </div>
+              </div>
+              <div class="lbl">{{ T.slot }} @if (date()) {<em>· {{ dateLabel() }}</em>}</div>
+              <div class="slots" [class.dim]="!date()">
+                @for (s of slots; track s) {<button class="slot" [class.on]="slot() === s" [disabled]="!date()" (click)="slot.set(s)">{{ s }}</button>}
+                <button class="slot wide" [class.on]="slot() === 'flex'" [disabled]="!date()" (click)="slot.set('flex')">{{ T.flex }}</button>
+              </div>
+            }
+            @case (3) {
+              <h2>{{ T.s3h }}</h2>
+              <div class="two">
+                <label class="field"><span>{{ T.name }}</span><input [value]="name()" (input)="name.set($any($event.target).value)" autocomplete="name"></label>
+                <label class="field"><span>{{ T.company }}</span><input [value]="company()" (input)="company.set($any($event.target).value)" autocomplete="organization"></label>
+                <label class="field"><span>{{ T.email }}</span><input type="email" [value]="email()" (input)="email.set($any($event.target).value)" autocomplete="email"></label>
+                <label class="field"><span>{{ T.phone }}</span><input type="tel" [value]="phone()" (input)="phone.set($any($event.target).value)" autocomplete="tel" placeholder="+41"></label>
+              </div>
+              <label class="field"><span>{{ T.message }}</span><textarea rows="3" [value]="message()" (input)="message.set($any($event.target).value)" [placeholder]="T.messagePh"></textarea></label>
+              <label class="check"><input type="checkbox" [checked]="consent()" (change)="consent.set($any($event.target).checked)"><i></i><span>{{ T.consent }} — <a dgLink="/protection-des-donnees" (click)="bk.close()">{{ T.privacy }}</a></span></label>
+              <div class="sum">
+                <div class="lbl" style="margin:0 0 6px">{{ T.summary }}</div>
+                @for (r of summary(); track $index) {<div class="row"><span>{{ r[0] }}</span><b>{{ r[1] }}</b></div>}
+              </div>
+              @if (error()) {<p class="err">{{ T.error }}</p>}
+            }
+          }
+        </div>
+      }
+    </div>
+
+    <footer class="foot">
+      @if (step() > 0) {<button class="ghost" (click)="go(-1)">← {{ T.back }}</button>} @else {<span></span>}
+      @if (step() < 3) {
+        <button class="dg-cta go" [disabled]="!valid()" (click)="go(1)"><span class="dg-cta-label">{{ T.next }}</span><span class="dg-cta-arrow"><span>→</span></span></button>
+      } @else {
+        <button class="dg-cta go" [disabled]="!valid() || sending()" (click)="submit()"><span class="dg-cta-label">{{ sending() ? T.sending : T.send }}</span><span class="dg-cta-arrow"><span>→</span></span><span class="dg-cta-shine"></span></button>
+      }
+    </footer>
+  } @else {
+    <div class="body done">
+      <svg class="tick" viewBox="0 0 80 80"><circle cx="40" cy="40" r="36"/><path d="M24 41l11 11 21-23"/></svg>
+      <h2>{{ result() === 'sent' ? T.okH : T.mailH }}</h2>
+      <p class="sub" style="max-width:420px">{{ result() === 'sent' ? T.okP : T.mailP }}</p>
+      <div class="sum" style="text-align:left;width:100%">
+        @for (r of summary(); track $index) {<div class="row"><span>{{ r[0] }}</span><b>{{ r[1] }}</b></div>}
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+        <a class="dg-ghost-dim" [href]="icsHref()" download="dg-expertise-rendez-vous.ics">＋ {{ T.ics }}</a>
+        <button class="ghost" (click)="reset()">{{ T.again }}</button>
+        <button class="dg-cta" (click)="finish()"><span class="dg-cta-label">{{ T.done }}</span><span class="dg-cta-arrow"><span>✓</span></span></button>
+      </div>
+    </div>
+  }
+</aside>

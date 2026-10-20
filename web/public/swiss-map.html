@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;height:100%;background:#1A1A1A;font-family:Inter,sans-serif;overflow:hidden}
+svg{width:100%;height:100%;display:block}
+.pin{cursor:pointer}
+.pin .ring{r:12;opacity:.3;transition:r .35s cubic-bezier(.2,.8,.2,1),opacity .35s}
+.pin.head .ring{r:18}
+.pin .lbl{fill:#fff;font-size:13px;font-weight:500;opacity:.9;transition:opacity .25s}
+.pin .sub{fill:rgba(255,255,255,.6);font-size:11px;opacity:0;transition:opacity .25s}
+.pin:hover .lbl,.pin.active .lbl{opacity:1;font-weight:600}
+.pin:hover .sub,.pin.active .sub{opacity:1}
+.pin:hover .ring,.pin.active .ring{r:22;opacity:.45}
+@keyframes pulse{0%{r:8;opacity:.6}100%{r:34;opacity:0}}
+.pulse{animation:pulse 2.4s ease-out infinite}
+@keyframes grow{from{r:0}}
+@keyframes fade{from{opacity:0}}
+#haloOuter,#haloIn,#haloRing{transition:cx .9s cubic-bezier(.4,0,.2,1),cy .9s cubic-bezier(.4,0,.2,1),r .9s cubic-bezier(.4,0,.2,1)}
+#guide{transition:x1 .9s cubic-bezier(.4,0,.2,1),y1 .9s cubic-bezier(.4,0,.2,1),y2 .9s cubic-bezier(.4,0,.2,1)}
+.legend{position:absolute;right:24px;top:20px;display:flex;gap:20px;font-size:12px;color:rgba(255,255,255,.7);pointer-events:none}
+.legend span{display:flex;align-items:center;gap:8px}
+.legend i{width:10px;height:10px;border-radius:50%;background:#A6CE00;display:inline-block}
+.legend i.halo{background:rgba(166,206,0,.35)}
+</style></head><body>
+<svg id="map" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet">
+  <defs><clipPath id="chclip"><path id="clipPath" /></clipPath></defs>
+  <path id="ch" fill="#3a3a3a" stroke="rgba(255,255,255,.18)" stroke-width="1" />
+  <circle id="haloOuter" fill="#A6CE00" opacity=".14" style="animation:grow 1.2s cubic-bezier(.2,.8,.2,1)" />
+  <circle id="haloIn" fill="#A6CE00" opacity=".5" clip-path="url(#chclip)" style="animation:grow 1.2s cubic-bezier(.2,.8,.2,1)" />
+  <circle id="haloRing" fill="none" stroke="#A6CE00" stroke-opacity=".5" stroke-dasharray="3 5" style="animation:fade .6s .9s backwards" />
+  <line id="guide" stroke="rgba(255,255,255,.5)" stroke-width="1" x2="1000" />
+  <g id="pins"></g>
+</svg>
+<div class="legend"><span><i></i><b id="lgOffice" style="font-weight:400">Agence</b></span><span><i class="halo"></i><b id="lgArea" style="font-weight:400">Zone d'intervention</b></span></div>
+<script>
+const CH="M807.0,136.1L811.1,138.6L821.3,148.2L819.3,163.9L807.5,189.5L801.3,209.9L800.8,225.9L801.8,233.2L803.9,233.2L815.2,234.3L820.8,234.3L838.3,238.3L852.7,244.5L855.8,251.4L857.3,259.4L874.3,270.2L893.8,277.1L900.4,274.9L924.6,249.2L934.4,253.6L940.0,267.3L939.5,274.2L932.8,301.4L931.8,316.2L937.4,325.5L937.9,333.1L936.4,340.0L926.6,340.7L913.8,336.7L903.0,325.2L894.3,326.6L887.1,329.5L883.5,340.7L880.4,353.6L881.4,361.2L886.6,366.6L890.7,378.8L893.3,394.2L895.8,401.4L893.3,404.2L886.6,406.4L880.9,404.6L870.7,386.0L866.0,378.8L858.3,377.7L844.5,382.0L823.4,392.4L814.7,392.4L807.5,390.3L800.8,381.7L795.2,364.8L793.1,354.0L789.0,354.4L775.6,351.1L769.5,355.4L769.5,372.7L767.9,394.6L761.3,408.2L742.2,432.5L735.6,442.9L732.5,450.3L732.0,456.8L735.1,468.2L738.7,478.8L735.6,485.2L725.8,488.4L718.6,481.7L716.1,470.3L700.6,454.3L707.3,441.1L706.3,437.5L681.1,430.7L670.3,420.7L654.9,402.8L651.8,395.3L652.9,370.5L651.8,364.4L649.8,361.5L642.6,361.5L632.3,370.2L622.6,383.1L603.0,397.8L601.0,400.7L607.7,415.0L607.2,420.3L591.8,442.9L588.7,450.3L568.6,464.2L559.4,469.6L531.7,459.3L523.9,457.8L511.1,465.0L493.6,471.4L465.4,478.1L454.6,473.1L450.0,468.5L447.4,461.8L440.2,450.0L432.0,442.9L426.4,435.0L419.2,426.4L414.5,419.6L420.7,396.7L416.1,388.8L413.5,377.4L415.1,369.5L412.5,367.7L386.8,363.3L365.2,364.8L350.3,372.3L337.5,384.9L336.0,387.8L337.0,389.9L343.1,401.4L332.9,413.9L316.4,423.2L305.1,424.3L300.0,422.5L300.0,409.3L309.2,404.6L318.0,396.0L320.5,383.8L321.6,375.6L312.8,365.1L313.9,359.0L319.5,346.8L322.6,336.4L327.2,327.3L344.7,312.2L362.7,297.4L365.2,281.1L366.8,261.5L369.3,256.8L393.5,245.2L399.1,240.5L402.2,233.9L421.2,212.1L440.2,190.2L443.8,182.9L446.9,178.5L446.9,174.9L444.8,172.3L435.6,170.5L432.5,163.5L442.3,151.1L454.6,143.4L466.4,143.4L471.0,146.7L470.5,150.7L475.7,155.1L484.9,156.6L495.7,155.1L507.0,150.4L513.7,139.4L517.3,130.9L534.7,121.4L546.5,126.2L578.9,127.6L603.0,125.1L617.9,118.4L636.4,118.4L648.8,122.1L650.8,121.8L654.4,120.7L657.5,117.3L669.3,114.8L670.9,111.8L670.3,108.9L668.3,107.4L653.9,108.9L648.3,106.7L647.2,101.2L651.8,92.0L662.1,84.6L671.4,82.8L677.5,84.6L693.5,98.6L697.0,99.3L699.6,96.8L702.7,95.3L708.3,97.9L714.0,106.7L715.0,108.2L750.5,104.8L758.2,104.8L782.3,120.3Z";
+const offices=[
+ {id:"geneva",x:324.6,y:411.5,head:true},
+ {id:"vaud",x:395.6,y:292.5},
+ {id:"neuchatel",x:437,y:248.3},
+ {id:"fribourg",x:469.8,y:286.7}
+];
+const L={
+ en:{head:"Head Office",reg:"Regional office",office:"Office",area:"Area of operations",city:{geneva:"Geneva",vaud:"Vaud",neuchatel:"Neuchâtel",fribourg:"Fribourg"}},
+ fr:{head:"Siège",reg:"Agence régionale",office:"Agence",area:"Zone d'intervention",city:{geneva:"Genève",vaud:"Vaud",neuchatel:"Neuchâtel",fribourg:"Fribourg"}}
+};
+let lang="fr", active="geneva";
+const R=201.6, rOf=o=>o.head?R:R*0.55;
+const $=id=>document.getElementById(id);
+const NS="http://www.w3.org/2000/svg";
+const el=(t,a)=>{const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);return n;};
+$("ch").setAttribute("d",CH);
+$("clipPath").setAttribute("d",CH);
+const g=$("pins");
+offices.forEach((o,i)=>{
+  const p=el("g",{class:"pin"+(o.head?" head":"")+(o.head?" active":""),transform:`translate(${o.x},${o.y})`,style:`animation:fade .5s ${0.9+i*0.12}s backwards`});
+  p.appendChild(el("circle",{class:"ring",fill:"#A6CE00"}));
+  if(o.head)p.appendChild(el("circle",{class:"pulse",fill:"none",stroke:"#A6CE00","stroke-width":1.5}));
+  p.appendChild(el("circle",{r:o.head?6:4.5,fill:"#A6CE00"}));
+  if(o.head)p.appendChild(el("circle",{r:2.5,fill:"#1A1A1A"}));
+  p.appendChild(el("circle",{r:26,fill:"transparent"}));
+  const x=o.head?-20:16, anchor=o.head?"end":"start";
+  const lbl=el("text",{class:"lbl",x,y:-6,"text-anchor":anchor});
+  const sub=el("text",{class:"sub",x,y:10,"text-anchor":anchor});
+  p.appendChild(lbl);p.appendChild(sub);
+  p.addEventListener("click",()=>{select(o.id);parent.postMessage({type:"office",id:o.id},"*");});
+  o.node=p;o.lbl=lbl;o.sub=sub;
+  g.appendChild(p);
+});
+function moveHalo(o){const r=rOf(o);
+  [["haloOuter",r],["haloIn",r],["haloRing",r]].forEach(([id,rr])=>{const c=$(id);c.setAttribute("cx",o.x);c.setAttribute("cy",o.y);c.setAttribute("r",rr);});
+  const gl=$("guide");gl.setAttribute("x1",o.x);gl.setAttribute("y1",o.y);gl.setAttribute("y2",o.y);}
+function select(id){active=id;const o=offices.find(v=>v.id===id);if(!o)return;
+  offices.forEach(v=>v.node.classList.toggle("active",v.id===id));moveHalo(o);}
+function applyLang(){const l=L[lang];
+  $("lgOffice").textContent=l.office;$("lgArea").textContent=l.area;
+  offices.forEach(o=>{o.lbl.textContent=o.head?l.head:l.city[o.id];o.sub.textContent=o.head?l.city[o.id]:l.reg;});}
+moveHalo(offices[0]);applyLang();
+window.addEventListener("message",e=>{
+  if(e.data&&e.data.type==="lang"){lang=e.data.lang==="en"?"en":"fr";applyLang();}
+  if(e.data&&e.data.type==="select")select(e.data.id);
+});
+</script>
+</body></html>

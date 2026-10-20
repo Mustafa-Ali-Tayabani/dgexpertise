@@ -1,0 +1,246 @@
+@let c = C();
+@let p = P();
+<div style="width:100%;margin:0 auto;background:#1A1A1A;color:#fff;font-family:Inter,sans-serif;overflow:hidden">
+  @if (page() === 'application') {
+    <dg-app-hero [hero]="p.hero" [lang]="lang()" />
+  } @else {
+  <dg-hero [height]="760">
+    <image-slot slot="bg" [src]="IMG().hero" [placeholder]="p.hero.eyebrow" />
+    <dg-header slot="header" [active]="pg().active" [overlay]="true" />
+    <div class="r-hero-body" style="position:absolute;left:var(--gx);right:var(--gx);bottom:72px;display:flex;flex-direction:column;gap:28px;pointer-events:none">
+      <div style="display:flex;align-items:center;gap:12px;font-size:13px;font-weight:500;color:rgba(255,255,255,0.88)"><span class="dg-dot"></span>{{ p.hero.eyebrow }}</div>
+      <h1 style="margin:0;font-size:clamp(40px,6.667vw,96px);line-height:0.94;letter-spacing:-0.045em;font-weight:300;max-width:1120px;text-wrap:pretty">{{ title().a }} <span style="font-weight:700;color:#A6CE00">{{ title().b }}</span><span style="font-weight:700;color:#0075D6">{{ title().mark }}</span></h1>
+      <p style="margin:0;font-size:18px;line-height:1.6;color:rgba(255,255,255,0.85);max-width:680px;text-wrap:pretty">{{ p.hero.lead }}</p>
+      @if (p.hero.cta) {
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:4px;pointer-events:auto">
+          <a dgCta [dgLink]="p.hero.href">{{ p.hero.cta }}</a>
+          <a href="tel:+41225359364" class="dg-ghost"><span class="dg-ping"></span>{{ c.ctaCall }}</a>
+          @if (p.hero.stores) {
+            <a href="https://apps.apple.com/ch/app/pollux-mobile/id1589255990?l=fr" class="store">App Store</a>
+            <a href="https://play.google.com/store/apps/details?id=ch.dgexpertise.polluxMobile" class="store">Google Play</a>
+          }
+        </div>
+      }
+    </div>
+  </dg-hero>
+  }
+
+  <dg-promises style="margin:0 var(--gx)" [items]="c.promises" />
+
+  @for (b of blocks(); track b.k) {
+    @switch (b.type) {
+
+      @case ('trust') {
+        <dg-trust style="margin-top:calc(96px*var(--k))" [title]="c.trustTitle" [logos]="logos" />
+      }
+
+      @case ('split') {
+        <div class="r-split" style="padding:calc(112px*var(--k)) var(--gx) 0;display:grid;gap:var(--g64);align-items:center" [style.grid-template-columns]="b.cols">
+          <div style="display:flex;flex-direction:column;gap:24px" [style.order]="b.textOrder">
+            <div class="eyebrow">{{ b.eyebrow }}</div>
+            <h2 style="margin:0;font-weight:700;font-size:clamp(28px,3.333vw,48px);line-height:1.02;letter-spacing:-0.035em;text-wrap:pretty">{{ b.hA }} <span style="color:#A6CE00">{{ b.hB }}</span></h2>
+            @for (t of b.ps; track $index) {<p class="body">{{ t }}</p>}
+          </div>
+          @if (b.src?.includes('pollux-presentation')) {
+            <dg-pollux-visual [lang]="lang()" />
+          } @else {
+            <div class="split-media" [class.logo]="isLogo(b.src)"><image-slot [src]="b.src" [placeholder]="b.img" [fit]="isLogo(b.src) ? 'contain' : 'cover'" /></div>
+          }
+        </div>
+      }
+
+      @case ('team') {
+        <div style="margin-top:calc(112px*var(--k));background:#fff;color:#1A1A1A;padding:calc(112px*var(--k)) var(--gx);display:flex;flex-direction:column;gap:56px">
+          <div class="r-split" style="display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:var(--g64);align-items:end"><h2 class="h56">{{ b.hA }} <span style="color:#0075D6">{{ b.hB }}</span></h2><p style="margin:0;font-size:17px;line-height:1.6;color:rgba(26,26,26,0.7)">{{ b.sub }}</p></div>
+          <div class="r-g5" style="display:grid;grid-template-columns:repeat(5,1fr);gap:16px">
+            @for (m of b.members; track $index) {
+              <div style="display:flex;flex-direction:column;gap:14px">
+                <div style="position:relative;aspect-ratio:1;border-radius:16px;overflow:hidden;background:#f2f2f0"><image-slot [src]="m.src" [placeholder]="m.name" /></div>
+                <div><div style="font-weight:600;font-size:17px;letter-spacing:-0.01em">{{ m.name }}</div><div style="font-size:13px;color:rgba(26,26,26,0.6);margin-top:2px">{{ m.role }}</div></div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      @case ('values') {
+        <div style="padding:calc(112px*var(--k)) var(--gx) 0;display:flex;flex-direction:column;gap:48px">
+          <h2 class="h56">{{ b.hA }} <span style="color:#A6CE00">{{ b.hB }}</span></h2>
+          <div class="r-g3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px;border-top:1px solid rgba(255,255,255,0.15)">
+            @for (v of b.items; track $index) {<div style="padding-top:28px;display:flex;flex-direction:column;gap:16px"><span style="font-weight:700;font-size:clamp(28px,3.333vw,48px);letter-spacing:-0.04em;color:#A6CE00;line-height:1">{{ v.n }}</span><span style="font-weight:600;font-size:24px;letter-spacing:-0.01em">{{ v.h }}</span><p style="margin:0;font-size:15px;line-height:1.6;color:rgba(255,255,255,0.72);text-wrap:pretty">{{ v.p }}</p></div>}
+          </div>
+        </div>
+      }
+
+      @case ('gallery') {
+        <div style="padding:calc(112px*var(--k)) var(--gx) 0;display:flex;flex-direction:column;gap:48px">
+          <div class="r-split" style="display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:var(--g64);align-items:end"><h2 class="h56">{{ b.hA }} <span style="color:#A6CE00">{{ b.hB }}</span></h2><p style="margin:0;font-size:17px;line-height:1.6;color:rgba(255,255,255,0.7)">{{ b.sub }}</p></div>
+          <div class="r-gallery" style="display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:240px;grid-auto-flow:dense;gap:12px">
+            @for (t of b.tiles; track $index) {<div style="position:relative;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.1)" [style.grid-column]="t.col" [style.grid-row]="t.row"><image-slot [src]="t.src" [placeholder]="t.label" /></div>}
+          </div>
+        </div>
+      }
+
+      @case ('videos') {
+        <div style="padding:calc(112px*var(--k)) var(--gx) 0;display:flex;flex-direction:column;gap:48px">
+          <div class="r-wrap" style="display:flex;justify-content:space-between;align-items:end;gap:32px"><div style="display:flex;flex-direction:column;gap:16px"><h2 class="h56">{{ b.hA }} <span style="color:#A6CE00">{{ b.hB }}</span></h2><p style="margin:0;font-size:17px;color:rgba(255,255,255,0.7)">{{ b.sub }}</p></div><a href="https://www.youtube.com/channel/UCS46ciHJ6JuzE_pIWRVwy5Q" class="dg-clink" style="font-size:15px"><i>→</i>YouTube</a></div>
+          <div class="r-g3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+            @for (t of b.tiles; track $index) {<a [dgLink]="t.href" style="display:block;position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.1)"><image-slot [src]="t.src" [placeholder]="t.label" /><span class="play">▶</span></a>}
+          </div>
+        </div>
+      }
+
+      @case ('features') {
+        <div style="padding:calc(112px*var(--k)) var(--gx) 0;display:flex;flex-direction:column;gap:var(--g64)">
+          <h2 class="h56">{{ b.hA }} <span style="color:#A6CE00">{{ b.hB }}</span></h2>
+          @for (f of b.items; track $index) {
+            <div class="r-split" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--g64);align-items:center;padding-top:48px;border-top:1px solid rgba(255,255,255,0.12)">
+              <div style="display:flex;flex-direction:column;gap:20px" [style.order]="f.order">
+                <span style="font-size:13px;color:#A6CE00;font-weight:600">{{ f.n }}</span>
+                <h3 style="margin:0;font-weight:700;font-size:clamp(26px,2.5vw,36px);line-height:1.05;letter-spacing:-0.03em;text-wrap:pretty">{{ f.h }}</h3>
+                @for (t of f.ps; track $index) {<p style="margin:0;font-size:16px;line-height:1.65;color:rgba(255,255,255,0.75);text-wrap:pretty">{{ t }}</p>}
+                @if (f.steps.length) {<div style="display:flex;flex-direction:column;border-top:1px solid rgba(255,255,255,0.15)">@for (s of f.steps; track $index) {<div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.15);font-size:15px"><span style="color:#A6CE00;font-weight:600">{{ s.n }}</span><span style="color:rgba(255,255,255,0.85)">{{ s.text }}</span></div>}</div>}
+              </div>
+              @if (page() === 'application') {
+                <div class="phone-stage"><i class="ps-glow"></i><dg-phone-screen [kind]="phoneKinds[$index % 4]" [lang]="lang()" /></div>
+              } @else {
+                <div style="position:relative;height:420px;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,0.12)"><image-slot [src]="f.src" [placeholder]="f.img" /></div>
+              }
+            </div>
+          }
+        </div>
+      }
+
+      @case ('course') {
+        <div class="r-split" style="padding:calc(112px*var(--k)) var(--gx) 0;display:grid;grid-template-columns:minmax(0,1fr) 560px;gap:var(--g64);align-items:start">
+          <div style="display:flex;flex-direction:column;gap:24px">
+            <div class="eyebrow">{{ b.eyebrow }}</div>
+            <h2 style="margin:0;font-weight:700;font-size:clamp(28px,3.611vw,52px);line-height:1;letter-spacing:-0.04em;text-wrap:pretty">{{ b.hA }} <span style="color:#A6CE00">{{ b.hB }}</span></h2>
+            <p class="body">{{ b.p }}</p>
+            <div style="font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-top:8px">{{ b.progLabel }}</div>
+            <div style="display:flex;flex-direction:column;border-top:1px solid rgba(255,255,255,0.15)">@for (ch of b.chapters; track $index) {<div style="display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;padding:18px 0;border-bottom:1px solid rgba(255,255,255,0.15);font-size:16px"><span style="color:#A6CE00;font-weight:600">{{ ch.n }}</span><span>{{ ch.text }}</span></div>}</div>
+            <a [dgLink]="b.href" class="course-btn">{{ b.cta }}<span style="width:40px;height:40px;border-radius:50%;background:#1A1A1A;color:#A6CE00;display:grid;place-items:center">→</span></a>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div style="position:relative;height:380px;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,0.12)"><image-slot [src]="b.src" [placeholder]="b.img" /></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">@for (fa of b.facts; track $index) {<div style="padding:20px;border-radius:14px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.03);font-size:14px;line-height:1.5;color:rgba(255,255,255,0.85)">{{ fa }}</div>}</div>
+          </div>
+        </div>
+      }
+
+      @case ('testimonials') {
+        <div style="margin-top:calc(112px*var(--k));background:#fff;color:#1A1A1A;padding:calc(112px*var(--k)) var(--gx);display:flex;flex-direction:column;gap:48px">
+          <h2 class="h56">{{ b.hA }} <span style="color:#0075D6">{{ b.hB }}</span></h2>
+          <div class="r-g3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">@for (r of b.items; track $index) {<div style="display:flex;flex-direction:column;gap:24px;padding:32px;border-radius:20px;border:1px solid rgba(26,26,26,0.12)"><span style="font-size:clamp(28px,3.333vw,48px);line-height:0.6;color:#A6CE00;font-weight:700">“</span><p style="margin:0;font-size:18px;line-height:1.5;flex:1;text-wrap:pretty">{{ r.text }}</p><div style="display:flex;align-items:center;gap:12px;border-top:1px solid rgba(26,26,26,0.1);padding-top:16px"><span style="width:36px;height:36px;border-radius:50%;background:#1A1A1A;color:#A6CE00;display:grid;place-items:center;font-size:13px;font-weight:600">{{ r.initial }}</span><div><div style="font-size:14px;font-weight:600">{{ r.author }}</div><div style="font-size:12px;color:rgba(26,26,26,0.55)">{{ r.role }}</div></div></div></div>}</div>
+        </div>
+      }
+
+      @case ('ebooks') {
+        <div id="ebooks" style="padding:calc(112px*var(--k)) var(--gx) 0;display:flex;flex-direction:column;gap:48px">
+          <h2 class="h56">{{ b.hA }} <span style="color:#A6CE00">{{ b.hB }}</span></h2>
+          <div class="r-g2" style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px">
+            @for (e of b.items; track $index) {
+              <div class="hv-border-green r-card" style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:28px;padding:24px;border-radius:20px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.03);transition:border-color .3s">
+                <div style="position:relative;aspect-ratio:3/4;border-radius:10px;overflow:hidden"><image-slot [src]="e.src" [placeholder]="e.img" /></div>
+                <div style="display:flex;flex-direction:column;gap:16px">
+                  <span style="font-size:12px;color:#A6CE00;font-weight:600">E-book {{ e.n }}</span>
+                  <span style="font-weight:600;font-size:22px;letter-spacing:-0.01em;line-height:1.15">{{ e.h }}</span>
+                  <div style="display:flex;flex-direction:column;gap:8px;flex:1">@for (bl of e.bullets; track $index) {<div style="display:flex;gap:10px;font-size:14px;line-height:1.45;color:rgba(255,255,255,0.75)"><span style="width:6px;height:6px;border-radius:50%;background:#A6CE00;margin-top:7px;flex-shrink:0"></span>{{ bl }}</div>}</div>
+                  <a [dgLink]="b.href" class="hv-fill-green" style="align-self:flex-start;display:inline-flex;align-items:center;gap:10px;padding:10px 18px;border-radius:999px;border:1px solid rgba(255,255,255,0.3);font-size:14px;font-weight:500">↓ {{ b.btn }}</a>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      @case ('links') {
+        <div style="margin-top:calc(112px*var(--k));background:#fff;color:#1A1A1A;padding:calc(112px*var(--k)) var(--gx);display:flex;flex-direction:column;gap:48px">
+          <h2 class="h56">{{ b.hA }} <span style="color:#0075D6">{{ b.hB }}</span></h2>
+          <div class="r-g3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:48px 32px">
+            @for (g of b.groups; track $index) {
+              <div style="display:flex;flex-direction:column;gap:4px;border-top:1px solid #1A1A1A;padding-top:20px">
+                <div style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#0075D6;margin-bottom:8px">{{ g.h }}</div>
+                @for (l of g.links; track $index) {<a [dgLink]="l.href" class="hv-blue" style="display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid rgba(26,26,26,0.1);font-size:15px;line-height:1.4"><span>{{ l.label }}</span><span style="color:#0075D6">↗</span></a>}
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      @case ('labs') {
+        <div style="margin-top:calc(112px*var(--k));background:#fff;color:#1A1A1A;padding:calc(112px*var(--k)) var(--gx);display:flex;flex-direction:column;gap:48px">
+        <h2 class="h56">{{ lang() === 'fr' ? 'Nos laboratoires' : 'Our partner' }} <span style="color:#0075D6">{{ lang() === 'fr' ? 'partenaires' : 'laboratories' }}</span></h2>
+        <div class="r-g2" style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px">
+          @for (lb of b.items; track $index) {
+            <div class="hv-lift-blue" style="display:flex;flex-direction:column;gap:20px;padding:36px;border-radius:20px;border:1px solid rgba(26,26,26,0.12);transition:border-color .3s,transform .3s">
+              <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px"><span style="font-weight:700;font-size:clamp(28px,2.778vw,40px);letter-spacing:-0.04em">{{ lb.name }}</span><span style="font-size:12px;font-weight:500;padding:6px 12px;border-radius:999px;background:rgba(0,117,214,0.08);color:#0075D6">{{ lb.where }}</span></div>
+              @for (t of lb.ps; track $index) {<p style="margin:0;font-size:15px;line-height:1.6;color:rgba(26,26,26,0.72);text-wrap:pretty">{{ t }}</p>}
+              <a [dgLink]="lb.href" class="hv-blue" style="margin-top:auto;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600"><span style="width:32px;height:32px;border-radius:50%;background:#1A1A1A;color:#A6CE00;display:grid;place-items:center;font-size:12px">↗</span>{{ b.btn }} {{ lb.name }}</a>
+            </div>
+          }
+        </div>
+        </div>
+      }
+
+      @case ('faq') {
+        <dg-faq style="padding:calc(112px*var(--k)) var(--gx) 0" [title]="b.h" [items]="b.items" />
+      }
+
+      @case ('news') {
+        <div style="padding:calc(80px*var(--k)) var(--gx) 0;display:flex;flex-direction:column;gap:40px">
+          <div class="r-wrap" style="display:flex;gap:8px">@for (f of b.filters; track f.key) {<button (click)="cat.set(f.key)" class="filter" [style.background]="cat() === f.key ? '#fff' : 'transparent'" [style.color]="cat() === f.key ? '#1A1A1A' : 'rgba(255,255,255,0.75)'">{{ f.label }}</button>}</div>
+          <div class="r-g3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+            @for (n of b.items; track n.title) {
+              <a [dgLink]="'/actualites/' + n.slug" class="hv-lift" style="display:flex;flex-direction:column;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.03);color:#fff;transition:border-color .3s,transform .3s">
+                <div style="position:relative;aspect-ratio:16/10;overflow:hidden"><image-slot [src]="n.src" [placeholder]="n.cat" /></div>
+                <div style="display:flex;flex-direction:column;gap:14px;padding:24px;flex:1">
+                  <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:rgba(255,255,255,0.55)"><span style="color:#A6CE00;font-weight:600">{{ n.cat }}</span><span style="width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.3)"></span>{{ n.date }}</div>
+                  <span style="font-weight:600;font-size:20px;letter-spacing:-0.01em;line-height:1.25;text-wrap:pretty">{{ n.title }}</span>
+                  <p style="margin:0;font-size:14px;line-height:1.55;color:rgba(255,255,255,0.65);flex:1">{{ n.excerpt }}</p>
+                  <span style="display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500"><span style="width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,0.35);display:grid;place-items:center;font-size:12px">→</span>{{ b.read }}</span>
+                </div>
+              </a>
+            }
+          </div>
+        </div>
+      }
+
+      @case ('contact') {
+        <div class="r-split" style="padding:calc(80px*var(--k)) var(--gx) 0;display:grid;grid-template-columns:minmax(0,1fr) 460px;gap:32px;align-items:start">
+          <form (submit)="submit($event)" style="display:flex;flex-direction:column;gap:20px;padding:40px;border-radius:24px;background:#fff;color:#1A1A1A">
+            <h2 style="margin:0;font-weight:700;font-size:clamp(26px,2.5vw,36px);letter-spacing:-0.03em">{{ b.formTitle }}</h2>
+            @if (sent()) {<div style="padding:20px;border-radius:14px;background:#A6CE00;font-size:16px;font-weight:500">{{ b.sent }}</div>}
+            <div class="r-g2s" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <label class="fl">{{ b.name }}<input name="name" required autocomplete="name" class="fi"></label>
+              <label class="fl">{{ b.email }}<input name="email" type="email" required autocomplete="email" class="fi"></label>
+            </div>
+            <label class="fl">{{ b.subject }}<select name="subject" class="fi" style="background:#fff">@for (o of b.subjects; track $index) {<option>{{ o }}</option>}</select></label>
+            <label class="fl">{{ b.message }}<textarea name="message" rows="6" required class="fi" style="resize:vertical"></textarea></label>
+            @if (formError()) {<div style="padding:16px 20px;border-radius:14px;background:rgba(227,38,42,0.1);border:1px solid rgba(227,38,42,0.4);font-size:14px">{{ lang() === 'fr' ? "L'envoi a échoué. Réessayez ou appelez-nous au 022 535 93 64." : 'Sending failed. Please try again or call us on 022 535 93 64.' }}</div>}
+            <button type="submit" class="send" [disabled]="sending()">{{ b.send }}<span style="width:40px;height:40px;border-radius:50%;background:#A6CE00;color:#1A1A1A;display:grid;place-items:center">→</span></button>
+          </form>
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div style="padding:32px;border-radius:24px;background:#A6CE00;color:#1A1A1A;display:flex;flex-direction:column;gap:16px">
+              <span style="font-weight:700;font-size:clamp(22px,1.944vw,28px);letter-spacing:-0.03em">{{ b.quickTitle }}</span>
+              <p style="margin:0;font-size:15px;line-height:1.55">{{ b.quickP }}</p>
+              <a [dgLink]="quote" class="hv-white" style="align-self:flex-start;display:inline-flex;align-items:center;gap:12px;padding:6px 6px 6px 20px;border-radius:999px;background:#1A1A1A;color:#fff;font-size:14px;font-weight:600">{{ c.ctaQuote }}<span style="width:34px;height:34px;border-radius:50%;background:#A6CE00;color:#1A1A1A;display:grid;place-items:center">→</span></a>
+            </div>
+            <div style="padding:32px;border-radius:24px;border:1px solid rgba(255,255,255,0.14);display:flex;flex-direction:column;gap:4px">
+              <span style="font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:12px">{{ b.officesTitle }}</span>
+              @for (o of c.footer.offices; track o.city) {<a [href]="'tel:' + o.dial" class="hv-green" style="display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;padding:14px 0;border-top:1px solid rgba(255,255,255,0.12);font-size:14px;color:#fff"><span style="font-weight:600">{{ o.city }}</span><span style="display:flex;flex-direction:column;color:rgba(255,255,255,0.7)"><span>{{ o.addr }}</span><span style="color:#fff">{{ o.tel }}</span></span></a>}
+              <a href="mailto:contact@dgexpertise.ch" style="padding-top:14px;border-top:1px solid rgba(255,255,255,0.12);font-size:15px;font-weight:500">contact&#64;dgexpertise.ch</a>
+            </div>
+          </div>
+        </div>
+        <div class="r-map" style="margin:16px var(--gx) 0;position:relative;height:440px;border-radius:24px;overflow:hidden;border:1px solid rgba(255,255,255,0.12)"><iframe src="/swiss-map.html" title="Offices" style="position:absolute;inset:0;width:100%;height:100%;border:0;background:#1A1A1A"></iframe></div>
+      }
+    }
+  }
+
+  @if (p.band) {
+    <dg-band [title]="p.band.h" [sub]="p.band.p" [btn]="p.band.btn" [href]="p.band.href" [size]="52" />
+  }
+
+  <div style="margin-top:calc(112px*var(--k))"><dg-footer /></div>
+</div>

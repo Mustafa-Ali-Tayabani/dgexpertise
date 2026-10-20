@@ -1,0 +1,130 @@
+@let T = t();
+<div class="hdr" [style.background]="overlay() ? 'transparent' : '#1A1A1A'" (keydown.escape)="closeMega(true)">
+  <div class="bar" [style.padding]="overlay() ? '24px 40px' : '20px 40px'" [style.border-bottom]="overlay() ? '0' : '1px solid rgba(255,255,255,0.1)'">
+    <a [dgLink]="home" style="display:flex"><img src="/assets/logo-wordmark.png" alt="DG Expertise" style="height:20px;width:auto"></a>
+    <nav class="nav" [style.background]="overlay() ? 'rgba(26,26,26,0.45)' : 'rgba(255,255,255,0.06)'">
+      @for (it of items(); track it.id) {
+        <div class="ni" (mouseenter)="it.mega ? openMega(it.mega) : closeMega(true)" (mouseleave)="it.mega && closeMega()" (focusin)="it.mega && openMega(it.mega)">
+          <a [dgLink]="it.href" class="nl" [class.act]="it.active" [class.hov]="it.mega && mega() === it.mega" [attr.aria-expanded]="it.mega ? mega() === it.mega : null">
+            {{ it.label }}@if (it.mega) {<svg class="chev" width="10" height="10" viewBox="0 0 10 10"><path d="M2 3.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"></path></svg>}
+          </a>
+        </div>
+      }
+    </nav>
+    <div style="display:flex;gap:8px;align-items:center;font-size:13px;white-space:nowrap">
+      <div class="langs notranslate" translate="no">
+        <button (click)="L.set('fr')" aria-label="Français" class="lang-btn" [class.on]="lang() === 'fr'">FR</button>
+        <button (click)="L.set('en')" aria-label="English" class="lang-btn" [class.on]="lang() === 'en'">EN</button>
+      </div>
+      <a href="tel:+41225359364" class="phone">+41 (0)22 535 93 64</a>
+      <button (click)="book()" class="meet">{{ ctaMeet() }}</button>
+      <button class="burger" (click)="menu.set(!menu())" [attr.aria-expanded]="menu()" aria-label="Menu" [class.on]="menu()"><span></span><span></span></button>
+    </div>
+  </div>
+
+  <!-- ───────── mega menu ───────── -->
+  <div class="mega" [class.open]="!!mega()" (mouseenter)="openMega(shown())" (mouseleave)="closeMega()" [attr.aria-hidden]="!mega()" data-no-reveal>
+    @if (shown() === 'services') {
+      <div class="mg">
+        <div class="groups">
+          @for (g of groups(); track g.id; let gi = $index) {
+            <div class="grp">
+              <div class="gh"><span>{{ g.label }}</span><i>{{ g.items.length }}</i></div>
+              @for (s of g.items; track s.slug; let si = $index) {
+                <a [dgLink]="s.href" class="mi" [style.--i]="gi * 2 + si" (mouseenter)="hover.set(s.slug)" (focus)="hover.set(s.slug)" (click)="closeMega(true)">
+                  <dg-icon class="tile" [name]="s.slug" />
+                  <span class="mt"><b>{{ s.label }}</b><small>{{ s.short }}</small></span>
+                  <span class="ar">→</span>
+                </a>
+              }
+            </div>
+          }
+        </div>
+        @let p = preview();
+        <aside class="pv">
+          <div class="pv-img">
+            @for (s of allServices(); track s.slug) {<img [src]="s.img" alt="" [class.on]="s.slug === p.slug" loading="lazy">}
+            <span class="pv-tag"><dg-icon [name]="p.slug" style="width:18px;height:18px" />{{ p.group }}</span>
+          </div>
+          <div class="pv-body">
+            <b>{{ p.label }}</b>
+            <p>{{ p.short }}</p>
+            <div class="pv-cta">
+              <a dgCta [dgLink]="quote" (click)="closeMega(true)">{{ T.quote }}</a>
+              <button class="pv-book" (click)="book(p.slug)"><dg-icon name="calendar" style="width:18px;height:18px" />{{ T.book }}</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+      <div class="mg-foot">
+        <a dgLink="./Expertise.dc.html" class="all" (click)="closeMega(true)">{{ T.allServices }} <span>→</span></a>
+        <div class="proms">@for (pr of promises(); track $index) {<span><i></i>{{ pr }}</span>}</div>
+      </div>
+    }
+    @if (shown() === 'info') {
+      <div class="mg">
+        <div class="info">
+          @for (x of infoItems(); track x.key; let i = $index) {
+            <a [dgLink]="x.href" class="mi big" [style.--i]="i" (click)="closeMega(true)">
+              <dg-icon class="tile" [name]="x.key" />
+              <span class="mt"><b>{{ x.label }}</b><small>{{ x.desc }}</small></span>
+              <span class="ar">→</span>
+            </a>
+          }
+          <a dgLink="./Application.dc.html" class="app mi big" style="--i:5" (click)="closeMega(true)">
+            <span class="tile app-ic">P</span>
+            <span class="mt"><b>Pollux</b><small>{{ T.app }}</small></span>
+            <span class="ar">→</span>
+          </a>
+        </div>
+        @let a = latest();
+        <aside class="pv">
+          @if (a) {
+            <a [dgLink]="'/actualites/' + a.slug" class="pv-art" (click)="closeMega(true)">
+              <div class="pv-img"><img [src]="a.img" alt="" class="on" loading="lazy"><span class="pv-tag"><dg-icon name="article" style="width:18px;height:18px" />{{ T.latest }}</span></div>
+              <div class="pv-body"><small class="meta">{{ a.cat[lang()] }} · {{ a.date }}</small><b>{{ a.title[lang()] }}</b></div>
+            </a>
+          }
+          <a dgLink="./Actualites.dc.html" class="all" style="padding:0 20px 18px" (click)="closeMega(true)">{{ T.allNews }} <span>→</span></a>
+        </aside>
+      </div>
+    }
+  </div>
+</div>
+
+<!-- ───────── mobile / tablet menu ───────── -->
+<div class="sheet" data-lenis-prevent [class.open]="menu()" [attr.aria-hidden]="!menu()">
+  <div class="sheet-top" style="padding:24px var(--gx)">
+    <a [dgLink]="home" style="display:flex"><img src="/assets/logo-wordmark.png" alt="DG Expertise" style="height:20px;width:auto"></a>
+    <button class="burger on" (click)="menu.set(false)" aria-label="Fermer"><span></span><span></span></button>
+  </div>
+  <nav class="sheet-nav" style="padding:8px var(--gx) 24px">
+    @for (it of items(); track it.id; let i = $index) {
+      <div class="row" [style.transition-delay]="(menu() ? 80 + i * 45 : 0) + 'ms'">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px">
+          <a [dgLink]="it.href" class="bigl" [class.active]="it.active">{{ it.label }}</a>
+          @if (it.menu.length) {
+            <button class="sub-toggle" (click)="toggleSub(it.id)" [class.on]="sub() === it.id" [attr.aria-label]="it.label">+</button>
+          }
+        </div>
+        @if (it.menu.length) {
+          <div class="sub" [class.open]="sub() === it.id">
+            <div>
+              @for (m of it.menu; track m.href) {
+                <a [dgLink]="m.href" class="sub-link"><dg-icon class="si" [name]="m.icon" /><span style="flex:1">{{ m.label }}</span><span style="font-size:11px;color:rgba(255,255,255,0.35)">{{ m.tag }}</span></a>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </nav>
+  <div class="sheet-foot" style="padding:24px var(--gx) 32px">
+    <div class="langs notranslate" translate="no" style="align-self:flex-start">
+      <button (click)="L.set('fr')" class="lang-btn" [class.on]="lang() === 'fr'">FR</button>
+      <button (click)="L.set('en')" class="lang-btn" [class.on]="lang() === 'en'">EN</button>
+    </div>
+    <button (click)="book()" class="dg-cta" style="align-self:stretch;justify-content:space-between;border:0;cursor:pointer;font-family:Inter,sans-serif"><span class="dg-cta-label">{{ ctaMeet() }}</span><span class="dg-cta-arrow"><span>→</span></span><span class="dg-cta-shine"></span></button>
+    <a href="tel:+41225359364" class="dg-ghost-dim" style="align-self:stretch;justify-content:center"><span class="dg-ping"></span>+41 (0)22 535 93 64</a>
+  </div>
+</div>

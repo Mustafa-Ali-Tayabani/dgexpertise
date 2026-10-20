@@ -1,0 +1,11 @@
+# Cloudflare Worker serving DG Expertise Google reviews as JSON for the website.
+# Deploy:  npx wrangler@3 deploy   (secrets: see README.md)
+name = "dg-reviews"
+main = "src/worker.js"
+compatibility_date = "2024-09-23"
+
+[vars]
+# Comma-separated origins allowed to read the feed (add the production domain).
+ALLOWED_ORIGINS = "http://localhost:4200,https://www.dgexpertise.ch,https://dgexpertise.ch"
+# How long a fetched review list is cached (seconds).
+CACHE_SECONDS = "21600"

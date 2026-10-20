@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous"></script>
+<style>
+html,body,#m{margin:0;height:100%;background:#1A1A1A}
+.leaflet-control-attribution{background:rgba(255,255,255,.8)!important;color:#4a4a4a!important;font:10px Inter,sans-serif}
+.leaflet-control-attribution a{color:#1A1A1A!important}
+.pin{width:14px;height:14px;border-radius:50%;background:#A6CE00;border:3px solid #1A1A1A;box-shadow:0 0 0 6px rgba(166,206,0,.35)}
+</style></head><body><div id="m"></div>
+<script>
+const offices={geneva:[46.2322,6.0793],vaud:[46.7785,6.6410],neuchatel:[46.9870,6.9620],fribourg:[46.7960,7.1520]};
+const q=new URLSearchParams(location.search);let id=q.get("office")||"geneva";
+const map=L.map("m",{zoomControl:false,attributionControl:true,scrollWheelZoom:false,dragging:false}).setView(offices[id],14);
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"© OpenStreetMap contributors",maxZoom:19}).addTo(map);
+let marker=L.marker(offices[id],{icon:L.divIcon({className:"pin",iconSize:[14,14]})}).addTo(map);
+window.addEventListener("message",e=>{const d=e.data;if(d&&d.type==="select"&&offices[d.id]){id=d.id;map.flyTo(offices[id],14,{duration:1.2});marker.setLatLng(offices[id]);}});
+</script></body></html>

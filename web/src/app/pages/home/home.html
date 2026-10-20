@@ -1,0 +1,324 @@
+@let T = t();
+@let d = data();
+<div style="width:100%;margin:0 auto;background:#1A1A1A;color:#fff;font-family:Inter,sans-serif;overflow:hidden">
+
+  <!-- header + hero -->
+  <div class="r-hero" style="position:relative;height:900px;overflow:hidden">
+    <video #heroVideo src="/assets/hero.mp4?v=2" poster="/assets/hero.png" autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></video>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(26,26,26,0.55) 0%,rgba(26,26,26,0.05) 35%,rgba(26,26,26,0.85) 100%);pointer-events:none"></div>
+
+    <div style="position:absolute;top:0;left:0;right:0;z-index:60"><dg-header active="home" [overlay]="true" /></div>
+
+    <div class="r-split r-hero-body" style="position:absolute;left:var(--gx);right:var(--gx);bottom:64px;display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:var(--g64);align-items:end;pointer-events:none">
+      <div style="display:flex;flex-direction:column;gap:36px;pointer-events:auto">
+        <div style="display:flex;align-items:center;gap:12px;font-size:13px;font-weight:500;color:rgba(255,255,255,0.85)"><span class="dg-dot"></span>{{ T.heroEyebrow }}</div>
+        <h1 style="margin:0;font-size:clamp(54px,8.889vw,128px);line-height:0.9;letter-spacing:-0.045em;font-weight:300">{{ T.heroA }}<br>{{ T.heroB }} <span style="font-weight:700;color:#A6CE00">{{ T.heroC }}</span><span style="font-weight:700;color:#0075D6">.</span></h1>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:8px">
+          <a dgCta [dgLink]="quote">{{ T.ctaQuote }}</a>
+          <a dgLink="./Expertise.dc.html" class="hero-pill"><span style="font-size:12px;color:rgba(255,255,255,0.55)">01</span>{{ T.hPoll }}</a>
+          <a dgLink="./Certificat-CECB.dc.html" class="hero-pill"><span style="font-size:12px;color:rgba(255,255,255,0.55)">02</span>{{ T.hEnergy }}</a>
+        </div>
+        <div style="display:flex;align-items:center;gap:28px;flex-wrap:wrap;padding-top:28px;border-top:1px solid rgba(255,255,255,0.18);max-width:760px">
+          <span style="display:flex;align-items:center;gap:12px"><span style="height:36px;padding:0 10px;border-radius:6px;background:#fff;display:grid;place-items:center"><img src="/assets/logo-fach.png" alt="Forum Amiante Suisse" style="height:20px;width:auto"></span><span style="font-size:12px;color:rgba(255,255,255,0.75);line-height:1.3" [innerHTML]="T.badgeFach"></span></span>
+          <span style="display:flex;align-items:center;gap:12px"><span style="height:36px;padding:0 10px;border-radius:6px;background:#fff;display:grid;place-items:center"><img src="/assets/logo-geneve.png" alt="République et canton de Genève" style="height:28px;width:auto"></span><span style="font-size:12px;color:rgba(255,255,255,0.75);line-height:1.3" [innerHTML]="T.badgeSabra"></span></span>
+          <a href="tel:+41225359364" class="hv-green" style="margin-left:auto;display:flex;align-items:center;gap:10px;font-size:14px;color:#fff"><span class="dg-ping"></span>022 535 93 64</a>
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,0.94);backdrop-filter:blur(20px);color:#1A1A1A;padding:24px 24px 20px;border-radius:12px;display:flex;flex-direction:column;gap:14px;box-shadow:0 24px 60px rgba(0,0,0,0.35);pointer-events:auto">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600"><svg width="18" height="18" viewBox="0 0 48 48" aria-label="Google"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.5 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.7 6c4.5-4.2 6.9-10.3 6.9-17.7z"/><path fill="#FBBC05" d="M10.5 28.7c-.5-1.5-.8-3-.8-4.7s.3-3.2.8-4.7l-7.9-6.1C.9 16.5 0 20.1 0 24s.9 7.5 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.3 0 11.7-2.1 15.6-5.7l-7.7-6c-2.1 1.4-4.8 2.3-7.9 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>{{ T.gReviews }}</span>
+          <a [href]="g().url" target="_blank" rel="noopener" class="g-score" [attr.aria-label]="g().rating + '/5 · ' + g().count + ' ' + (lang() === 'fr' ? 'avis Google' : 'Google reviews')"><b>{{ ratingLabel() }}</b><span class="stars"><span>★★★★★</span><span class="fill" [style.width.%]="g().rating / 5 * 100">★★★★★</span></span><span class="cnt">({{ g().count }})</span></a>
+        </div>
+        @let r = currentReview();
+        @for (k of [review()]; track k) {<div class="rv-text" style="font-size:16px;line-height:1.45;min-height:70px;font-weight:400">“{{ r.text }}”</div>}
+        <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(26,26,26,0.1);padding-top:14px">
+          <div style="display:flex;align-items:center;gap:10px">
+            @if (r.photo) {<img [src]="r.photo" alt="" referrerpolicy="no-referrer" style="width:32px;height:32px;border-radius:50%;object-fit:cover">} @else {<span style="width:32px;height:32px;border-radius:50%;background:#1A1A1A;color:#A6CE00;display:grid;place-items:center;font-size:12px;font-weight:600">{{ r.initials }}</span>}
+            <div><div style="font-size:13px;font-weight:600">{{ r.author }}</div><div style="font-size:11px;color:rgba(26,26,26,0.55)">{{ r.meta }}</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <span style="font-size:11px;color:rgba(26,26,26,0.55);margin-right:6px">{{ review() % reviewCount() + 1 }} / {{ reviewCount() }}</span>
+            <button (click)="prevReview()" aria-label="Previous review" class="rv-prev">←</button>
+            <button (click)="nextReview()" aria-label="Next review" class="rv-next">→</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- services -->
+  <div style="position:relative;overflow:hidden;background:#fff;color:#1A1A1A;padding:0 var(--gx) calc(120px*var(--k))">
+    <div class="r-split r-auto-h" style="position:relative;display:grid;grid-template-columns:minmax(0,1fr) 520px;gap:48px;align-items:end;height:560px">
+      <div style="position:relative;display:flex;flex-direction:column;gap:28px;padding-bottom:64px">
+        <div class="dg-label on-light">{{ T.lblExpertise }}</div>
+        <h2 style="margin:0;font-weight:700;font-size:clamp(34px,5.556vw,80px);line-height:0.95;letter-spacing:-0.045em;text-wrap:pretty">{{ T.svcA }} <span style="color:#0075D6">{{ T.svcB }}</span>&ngsp;<span style="color:#A6CE00">{{ T.svcC }}</span></h2>
+        <p style="margin:0;font-size:19px;line-height:1.5;color:rgba(26,26,26,0.7);max-width:480px">{{ T.svcSub }}</p>
+        <div style="display:flex;gap:32px;font-size:15px;padding-top:4px">
+          <a dgLink="./Expertise.dc.html" class="dg-clink on-light"><i>→</i>{{ T.svcAll }}</a>
+          <a [dgLink]="quote" class="dg-clink on-light"><i>→</i>{{ T.ctaQuote }}</a>
+        </div>
+      </div>
+      <div style="position:relative;height:100%;display:flex;align-items:flex-end;justify-content:center;overflow:hidden">
+        <img src="/assets/experts-cutout.png?v=2" alt="DG Expertise pollutant expert and CECB energy expert" style="display:block;width:100%;height:auto;margin-bottom:-6px">
+      </div>
+    </div>
+    <div class="r-g3" style="position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;border-top:1px solid rgba(26,26,26,0.15);padding-top:20px">
+      <a dgLink="./Diagnostic-amiante.dc.html" class="svc-card green">
+        <span style="position:absolute;left:0;top:0;right:0;height:2px;background:#A6CE00"></span>
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:600;color:#A6CE00">01</span><span class="arrow">→</span></div>
+        <h3 style="margin:0;font-size:clamp(22px,1.944vw,28px);font-weight:600;line-height:1.1;letter-spacing:-0.03em;text-wrap:pretty;min-height:62px">{{ T.c1t }}</h3>
+        <p style="margin:0;font-size:15px;line-height:1.6;color:rgba(26,26,26,0.7);flex:1">{{ T.c1a }} <strong style="font-weight:600;color:#1A1A1A">{{ T.c1b }}</strong> {{ T.c1c }}</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;padding-top:16px;border-top:1px solid rgba(26,26,26,0.1)"><span class="chip">{{ T.chAsb }}</span><span class="chip">{{ T.chLead }}</span><span class="chip">PCB</span><span class="chip">{{ T.chPah }}</span><span class="chip">HBCD</span></div>
+      </a>
+      <a dgLink="./Suivi-de-chantier.dc.html" class="svc-card blue">
+        <span style="position:absolute;left:0;top:0;right:0;height:2px;background:#0075D6"></span>
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:600;color:#0075D6">02</span><span class="arrow">→</span></div>
+        <h3 style="margin:0;font-size:clamp(22px,1.944vw,28px);font-weight:600;line-height:1.1;letter-spacing:-0.03em;text-wrap:pretty;min-height:62px">{{ T.c2t }}</h3>
+        <p style="margin:0;font-size:15px;line-height:1.6;color:rgba(26,26,26,0.7);flex:1">{{ T.c2a }} <strong style="font-weight:600;color:#1A1A1A">{{ T.c2b }}</strong> {{ T.c2c }}</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;padding-top:16px;border-top:1px solid rgba(26,26,26,0.1)"><span class="chip">VDI 3492</span><span class="chip">{{ T.chAir }}</span><span class="chip">{{ T.chSite }}</span></div>
+      </a>
+      <a dgLink="./Certificat-CECB.dc.html" class="svc-card green">
+        <span style="position:absolute;left:0;top:0;right:0;height:2px;background:#A6CE00"></span>
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:600;color:#A6CE00">03</span><span class="arrow">→</span></div>
+        <h3 style="margin:0;font-size:clamp(22px,1.944vw,28px);font-weight:600;line-height:1.1;letter-spacing:-0.03em;text-wrap:pretty;min-height:62px">{{ T.c3t }}</h3>
+        <p style="margin:0;font-size:15px;line-height:1.6;color:rgba(26,26,26,0.7);flex:1">{{ T.c3a }} <strong style="font-weight:600;color:#1A1A1A">{{ T.c3b }}</strong> {{ T.c3c }}</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;padding-top:16px;border-top:1px solid rgba(26,26,26,0.1)"><span class="chip">CECB</span><span class="chip">CECB Plus</span><span class="chip">{{ T.chSub }}</span></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- locations -->
+  <div id="locations" style="padding:calc(120px*var(--k)) var(--gx) calc(96px*var(--k));display:flex;flex-direction:column;gap:var(--g64)">
+    <div class="r-split" style="display:grid;grid-template-columns:360px minmax(0,1fr);gap:var(--g64);align-items:end">
+      <div style="display:flex;flex-direction:column;gap:24px">
+        <div class="dg-label">{{ T.lblLoc }}</div>
+        <div style="display:flex;align-items:baseline;gap:20px"><span style="font-weight:700;font-size:clamp(59px,9.722vw,140px);line-height:0.85;color:#0075D6;letter-spacing:-0.05em">4</span><span style="font-size:18px;color:rgba(255,255,255,0.8);line-height:1.3" [innerHTML]="T.locRegOff"></span></div>
+      </div>
+      <p style="margin:0;font-size:clamp(22px,1.806vw,26px);font-weight:300;line-height:1.35;max-width:760px;text-wrap:pretty">{{ T.locBody }}</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="r-map" style="position:relative;height:560px;border:1px solid rgba(255,255,255,0.12);overflow:hidden">
+        <iframe #map src="/swiss-map.html" title="Offices across French-speaking Switzerland" style="position:absolute;inset:0;width:100%;height:100%;border:0;background:#1A1A1A"></iframe>
+      </div>
+      <div class="r-offices" style="display:grid;grid-template-columns:320px minmax(0,1fr) minmax(0,1fr) 300px;gap:16px;height:260px">
+        <div style="display:flex;flex-direction:column;border-top:1px solid rgba(255,255,255,0.15)">
+          @for (o of d.offices; track o.id) {
+            <a href="#" (click)="selectOffice($event, o.id)" class="hv-green" style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex:1;padding:0 4px;border-bottom:1px solid rgba(255,255,255,0.15);font-size:15px" [style.color]="o.id === active() ? '#fff' : 'rgba(255,255,255,0.7)'">
+              <span style="display:flex;align-items:center;gap:14px"><span style="width:8px;height:8px;border-radius:50%" [style.background]="o.id === active() ? '#A6CE00' : 'rgba(255,255,255,0.25)'"></span>{{ o.city }}</span>
+              <span style="font-size:12px;color:rgba(255,255,255,0.5)">{{ o.name }}</span>
+            </a>
+          }
+        </div>
+        <div style="position:relative;overflow:hidden;border:1px solid rgba(255,255,255,0.12)">
+          @for (o of d.offices; track o.id) {
+            <div style="position:absolute;inset:0" [style.display]="o.id === active() ? 'block' : 'none'"><image-slot [src]="o.photo" [placeholder]="o.photoLabel" /></div>
+          }
+        </div>
+        <div style="position:relative;overflow:hidden;border:1px solid rgba(255,255,255,0.12)">
+          <iframe #street src="/office-map.html?office=geneva" title="Street map of the selected office" style="position:absolute;inset:0;width:100%;height:100%;border:0;background:#1A1A1A"></iframe>
+        </div>
+        @let cur = current();
+        <div style="padding:24px;border:1px solid rgba(166,206,0,0.35);background:rgba(166,206,0,0.06);display:flex;flex-direction:column;justify-content:space-between;gap:16px">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:#A6CE00">{{ cur.name }}</div>
+            <div style="font-size:clamp(22px,1.944vw,28px);font-weight:600;letter-spacing:-0.02em">{{ cur.city }}</div>
+          </div>
+          <div style="font-size:14px;line-height:1.5;color:rgba(255,255,255,0.75)">{{ cur.address }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="r-wrap" style="display:flex;justify-content:space-between;align-items:center;gap:32px;flex-wrap:wrap">
+      <div style="display:flex;gap:32px;font-size:15px">
+        <a dgLink="./Expertise.dc.html" class="dg-clink"><i>→</i>{{ T.lnkExp }}</a>
+        <a dgLink="./Qui-sommes-nous.dc.html" class="dg-clink"><i>→</i>{{ T.lnkTeam }}</a>
+      </div>
+      <div style="font-size:14px;color:rgba(255,255,255,0.6)"><span style="color:#A6CE00;font-weight:500">{{ T.lblArea }}</span> · {{ T.areaList }}</div>
+      <div style="display:flex;align-items:center;gap:20px;font-size:14px;color:rgba(255,255,255,0.55)">
+        <a [dgLink]="quote" class="hv-green" style="display:flex;align-items:center;gap:10px;color:#fff"><span style="width:6px;height:6px;border-radius:50%;background:#A6CE00"></span>{{ T.ctaQuote }}</a>
+        <span style="width:1px;height:14px;background:rgba(255,255,255,0.15)"></span>
+        <a href="tel:+41225359364" class="hv-white" style="color:rgba(255,255,255,0.55)">{{ T.ctaCall }}</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- CEO quote -->
+  <div class="r-split" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);background:#0075D6;color:#fff">
+    <div class="r-media" style="position:relative;min-height:720px"><image-slot src="/assets/ceo.png" placeholder="Portrait — Djilloul, CEO" /></div>
+    <div style="padding:calc(80px*var(--k)) var(--gx);display:flex;flex-direction:column;justify-content:space-between;gap:48px">
+      <div style="font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;opacity:0.8">{{ T.lblCeo }}</div>
+      <div style="font-weight:500;font-size:clamp(26px,2.5vw,36px);line-height:1.2;letter-spacing:-0.02em;text-wrap:pretty">{{ T.ceoQuote }}</div>
+      <div class="r-wrap" style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;border-top:1px solid rgba(255,255,255,0.3);padding-top:28px">
+        <div><div style="font-weight:600;font-size:22px">Djilloul</div><div style="font-size:13px;opacity:0.8;margin-top:4px">{{ T.ceoRole }}</div></div>
+        <div style="display:flex;gap:24px;font-size:15px"><a dgLink="./Qui-sommes-nous.dc.html" class="hv-ink">{{ T.lnkMore }} →</a><a href="#figures" class="hv-ink">{{ T.lnkFig }} →</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- in figures -->
+  <div #fig id="figures" style="padding:calc(120px*var(--k)) var(--gx);display:flex;flex-direction:column;gap:56px">
+    <div class="dg-label">{{ T.lblFigures }}</div>
+    <div class="r-g3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px;border-top:1px solid rgba(255,255,255,0.15)">
+      <div style="padding-top:40px"><div class="fig-num" style="color:#A6CE00">{{ years() }}<span style="font-size:clamp(28px,3.889vw,56px);vertical-align:top;color:#fff;font-weight:400">+</span></div><div style="margin-top:20px;font-size:16px;color:rgba(255,255,255,0.8)">{{ T.figYears }}</div></div>
+      <div style="padding-top:40px"><div class="fig-num">{{ officesN() }}</div><div style="margin-top:20px;font-size:16px;color:rgba(255,255,255,0.8)">{{ T.figOffices }}</div></div>
+      <div style="padding-top:40px"><div class="fig-num">{{ cantons() }}</div><div style="margin-top:20px;font-size:16px;color:rgba(255,255,255,0.8)">{{ T.figCantons }}</div></div>
+    </div>
+    <div class="r-wrap" style="display:flex;justify-content:space-between;align-items:center;gap:32px;flex-wrap:wrap">
+      <div style="display:flex;gap:32px;font-size:15px">
+        <a href="#locations" class="dg-clink"><i>→</i>{{ T.lnkLoc }}</a>
+        <a dgLink="./Qui-sommes-nous.dc.html" class="dg-clink"><i>→</i>{{ T.lnkTeam }}</a>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <a dgCta [dgLink]="quote">{{ T.ctaQuote }}</a>
+        <a href="tel:+41225359364" class="dg-ghost-dim"><span class="dg-ping"></span>{{ T.ctaCall }}</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- occupational safety -->
+  <div class="r-split" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border-top:1px solid rgba(255,255,255,0.12)">
+    <div style="padding:calc(96px*var(--k)) var(--gx);display:flex;flex-direction:column;gap:32px">
+      <div class="dg-label">{{ T.lblSocial }}</div>
+      <h2 style="margin:0;font-weight:700;font-size:clamp(34px,5.556vw,80px);line-height:0.95;letter-spacing:-0.04em">{{ T.safeA }}<br><span style="color:#A6CE00">{{ T.safeB }}</span></h2>
+      <div style="font-size:15px;color:#A6CE00;font-weight:500">{{ T.safeSub }}</div>
+      <p style="margin:0;font-size:16px;line-height:1.6;color:rgba(255,255,255,0.75);max-width:520px;text-wrap:pretty">{{ T.safeBody }}</p>
+      <div style="display:flex;gap:32px;font-size:15px;margin-top:16px">
+        <a dgLink="./Qui-sommes-nous.dc.html" class="dg-clink"><i>→</i>{{ T.lnkMore }}</a>
+        <a href="#locations" class="dg-clink"><i>→</i>{{ T.lnkLoc }}</a>
+      </div>
+      <div style="margin-top:auto;padding-top:32px;border-top:1px solid rgba(255,255,255,0.12)"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <a dgCta [dgLink]="quote">{{ T.ctaQuote }}</a>
+        <a href="tel:+41225359364" class="dg-ghost-dim"><span class="dg-ping"></span>{{ T.ctaCall }}</a>
+      </div></div>
+    </div>
+    <div class="r-media" style="position:relative;min-height:720px;overflow:hidden"><video #safetyVideo src="/assets/safety.mp4" poster="/assets/safety.png" autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></video></div>
+  </div>
+
+  <!-- press + partners -->
+  <div style="padding:calc(120px*var(--k)) var(--gx);background:#fff;color:#1A1A1A;display:flex;flex-direction:column;gap:48px">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px">
+      <div class="dg-label on-light">{{ T.lblPress }}</div>
+      <div class="r-wrap" style="display:flex;gap:8px;font-size:13px">
+        @for (c of pressCats(); track c.key) {<button class="ptab" [class.on]="pressCat() === c.key" (click)="pressCat.set(c.key)">{{ c.label }}</button>}
+      </div>
+    </div>
+    <div #pressList (mousemove)="pressMove($event)" (mouseleave)="pressHover.set(-1)" style="position:relative;display:flex;flex-direction:column;border-top:1px solid #1A1A1A">
+      @for (p of press(); track p.id; let i = $index) {
+        @let on = pressHover() === i;
+        <a [dgLink]="p.href" (mouseenter)="pressHover.set(i)" class="r-press" style="position:relative;display:grid;grid-template-columns:96px minmax(0,1fr) 200px 48px;gap:32px;align-items:center;padding:36px 24px;margin:0 -24px;border-bottom:1px solid rgba(26,26,26,0.15);transition:background .35s" [style.background]="on ? 'rgba(26,26,26,0.04)' : 'transparent'">
+          <span style="font-weight:600;font-size:14px;letter-spacing:0.04em;transition:color .3s" [style.color]="on ? '#0075D6' : 'rgba(26,26,26,0.45)'">{{ p.num }}</span>
+          <span style="font-weight:500;font-size:clamp(22px,2.083vw,30px);letter-spacing:-0.025em;line-height:1.15;text-wrap:pretty;transition:transform .45s cubic-bezier(.2,.8,.2,1)" [style.transform]="'translateX(' + (on ? 12 : 0) + 'px)'">{{ p.title }}</span>
+          <span style="display:flex;flex-direction:column;gap:4px;font-size:13px;color:rgba(26,26,26,0.55)"><span style="color:#1A1A1A;font-weight:500">{{ p.tag }}</span><span>{{ p.date }}</span></span>
+          <span style="width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:18px;border:1px solid rgba(26,26,26,0.2);transition:background .3s,color .3s,transform .45s cubic-bezier(.2,.8,.2,1)" [style.background]="on ? '#1A1A1A' : 'transparent'" [style.color]="on ? '#fff' : '#1A1A1A'" [style.transform]="'rotate(' + (on ? -45 : 0) + 'deg)'">→</span>
+        </a>
+      }
+      <div class="r-hide-touch" style="position:absolute;left:0;top:0;width:300px;height:210px;pointer-events:none;z-index:2;transition:opacity .3s,transform .5s cubic-bezier(.2,.8,.2,1);box-shadow:0 30px 60px rgba(26,26,26,0.35);overflow:hidden;border-radius:6px;background:#1A1A1A" [style.transform]="previewTransform()" [style.opacity]="pressHover() >= 0 ? 1 : 0">
+        @for (p of press(); track p.id; let i = $index) {
+          <div style="position:absolute;inset:0;transition:opacity .3s;color:#fff" [style.opacity]="pressHover() === i ? 1 : 0"><image-slot [src]="p.img" [placeholder]="p.imgLabel" /></div>
+        }
+      </div>
+    </div>
+    <a dgLink="./Actualites.dc.html" class="dg-clink on-light" style="font-size:15px;align-self:flex-start"><i>→</i>{{ lang() === 'fr' ? 'Toutes les actualités (' + articleCount() + ')' : 'All news (' + articleCount() + ')' }}</a>
+    <div style="display:flex;flex-direction:column;gap:32px;padding-top:56px">
+      <div class="r-wrap" style="display:flex;justify-content:space-between;align-items:end;gap:32px">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div class="dg-label on-light">{{ T.lblTrust }}</div>
+          <div style="font-size:clamp(22px,1.944vw,28px);font-weight:500;letter-spacing:-0.02em;line-height:1.2;max-width:520px;text-wrap:pretty">{{ T.trustBody }}</div>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;font-size:13px;color:rgba(26,26,26,0.55)"><span style="width:6px;height:6px;border-radius:50%;background:#A6CE00"></span>{{ T.trustCount }}</div>
+      </div>
+      <div style="position:relative;overflow:hidden;border-top:1px solid rgba(26,26,26,0.15);border-bottom:1px solid rgba(26,26,26,0.15)" (mouseenter)="marqueePaused.set(true)" (mouseleave)="marqueePaused.set(false)">
+        <div style="position:absolute;left:0;top:0;bottom:0;width:120px;background:linear-gradient(90deg,#fff,rgba(255,255,255,0));z-index:1;pointer-events:none"></div>
+        <div style="position:absolute;right:0;top:0;bottom:0;width:120px;background:linear-gradient(270deg,#fff,rgba(255,255,255,0));z-index:1;pointer-events:none"></div>
+        <div style="display:flex;width:max-content;animation:dgMarquee 38s linear infinite" [style.animation-play-state]="marqueePaused() ? 'paused' : 'running'">
+          @for (l of logos; track $index) {
+            <div class="logo-cell"><img [src]="'/assets/' + l[0] + '.png'" [alt]="l[1]" [style.height.px]="l[2]"></div>
+          }
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <a dgCta [dgLink]="quote">{{ T.ctaQuote }}</a>
+        <a href="tel:+41225359364" class="dg-ghost-light"><span class="dg-ping"></span>{{ T.ctaCall }}</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- services directory -->
+  <div style="padding:calc(120px*var(--k)) var(--gx);display:flex;flex-direction:column;gap:72px;border-top:1px solid rgba(255,255,255,0.12)">
+    <div class="r-split" style="display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:var(--g64);align-items:end">
+      <div style="display:flex;flex-direction:column;gap:24px">
+        <div class="dg-label">{{ T.lblQuick }}</div>
+        <h2 style="margin:0;font-weight:700;font-size:clamp(28px,4.444vw,64px);line-height:1;letter-spacing:-0.04em;text-wrap:pretty">{{ T.qaA }} <span style="color:#A6CE00">{{ T.qaB }}</span></h2>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:28px">
+        <p style="margin:0;font-size:16px;line-height:1.6;color:rgba(255,255,255,0.75);text-wrap:pretty">{{ T.qaBody }}</p>
+        <a dgCta [dgLink]="quote" style="align-self:flex-start">{{ T.ctaQuote }}</a>
+      </div>
+    </div>
+    <div class="r-g6" style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:32px">
+      @for (col of dirCols; track col.n) {
+        <div style="display:flex;flex-direction:column;gap:20px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.15)">
+          <div style="display:flex;align-items:baseline;gap:10px"><span style="font-size:11px;color:#A6CE00;font-weight:500">{{ col.n }}</span><span style="font-size:15px;font-weight:600">{{ T[col.h] }}</span></div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            @for (k of col.items; track k) {
+              <a [dgLink]="col.href" class="dir-link"><span style="color:#0075D6;font-size:12px">→</span>{{ T[k] }}</a>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- contact -->
+  <div class="r-split" style="padding:calc(120px*var(--k)) var(--gx);background:#A6CE00;color:#1A1A1A;display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:var(--g64)">
+    <div style="display:flex;flex-direction:column;gap:32px">
+      <div style="font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase">{{ T.lblContact }}</div>
+      <h2 style="margin:0;font-weight:700;font-size:clamp(30px,5.0vw,72px);line-height:1;letter-spacing:-0.04em;text-wrap:pretty">{{ T.ctA }} <span style="color:#0075D6">{{ T.ctB }}</span></h2>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:flex-end;gap:24px">
+      <p style="margin:0;font-size:16px;line-height:1.6">{{ T.ctP1 }}</p>
+      <p style="margin:0;font-size:16px;line-height:1.6;opacity:0.7">{{ T.ctP2 }}</p>
+      <div style="border-top:1px solid #1A1A1A;padding-top:24px;display:flex;flex-direction:column;gap:8px;margin-top:8px">
+        <a href="tel:+41225359364" class="hv-blue" style="font-weight:600;font-size:clamp(22px,2.222vw,32px);letter-spacing:-0.02em">+41 (0)22 535 93 64</a>
+        <a href="mailto:contact@dgexpertise.ch" class="hv-blue" style="font-size:16px">contact&#64;dgexpertise.ch</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- van -->
+  <div #van style="position:relative;height:300px;background:#fff;overflow:hidden">
+    <div style="position:absolute;left:var(--gx);right:var(--gx);bottom:64px;height:1px;background:rgba(26,26,26,0.15)"></div>
+    <div style="position:absolute;left:var(--gx);right:var(--gx);bottom:40px;display:flex;justify-content:space-between;font-size:12px;color:rgba(26,26,26,0.5)"><span>{{ T.cGeneva }}</span><span>Vaud</span><span>Fribourg</span><span>Neuchâtel</span><span>Valais</span></div>
+    <img src="/assets/van.png" alt="DG Expertise service van" style="position:absolute;bottom:58px;left:0;height:190px;width:auto;will-change:transform" [style.transform]="'translateX(' + vanX() + 'px)'">
+  </div>
+
+  <!-- footer -->
+  <div style="padding:calc(96px*var(--k)) var(--gx) 40px;display:flex;flex-direction:column;gap:var(--g64);border-top:1px solid rgba(255,255,255,0.12);font-size:14px;color:rgba(255,255,255,0.7);line-height:1.5">
+    <div class="r-footer" style="display:grid;grid-template-columns:200px minmax(0,1fr) 340px 220px;gap:48px">
+      <div><img src="/assets/logo-symbol.png" alt="DG Expertise" style="height:88px;width:auto"></div>
+      <div style="display:flex;flex-direction:column;gap:24px">
+        <div class="dg-label">{{ T.fAddr }}</div>
+        <div class="r-g2s" style="display:grid;grid-template-columns:1fr 1fr;gap:28px 32px">
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font-weight:600;color:#fff">{{ T.cGeneva }},</span><span>Avenue de Vaudagne 33.</span><a href="tel:+41225359364" class="hv-green">+41 (0)22 535 93 64</a></div>
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font-weight:600;color:#fff">Fribourg,</span><span>Route de la Fonderie 2.</span><a href="tel:+41265880120" class="hv-green">+41 (0)26 588 01 20</a></div>
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font-weight:600;color:#fff">Vaud</span><span>Avenue de Grandson 48.</span><a href="tel:+41215050077" class="hv-green">+41 (0)21 505 00 77</a></div>
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font-weight:600;color:#fff">Neuchâtel,</span><span>Route des Falaises 140.</span><a href="tel:+41325087320" class="hv-green">+41 (0)32 508 73 20</a></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:24px">
+        <div class="dg-label">{{ T.fHours }}</div>
+        <p style="margin:0">{{ T.fHours1 }}</p>
+        <p style="margin:0">{{ T.fHours2 }}</p>
+        <div style="display:flex;flex-direction:column;gap:4px;color:#fff"><a href="tel:+41225359364" class="hv-green">+41 (0)22 535 93 64</a><a href="mailto:contact@dgexpertise.ch" class="hv-green">contact&#64;dgexpertise.ch</a></div>
+        <dg-social [alt]="true" />
+      </div>
+      <div style="display:flex;flex-direction:column;gap:24px">
+        <div class="dg-label">{{ T.fLegal }}</div>
+        <div style="display:flex;flex-direction:column;gap:10px;color:#fff"><a dgLink="/mentions-legales" class="hv-green">{{ T.fNotice }}</a><a dgLink="/protection-des-donnees" class="hv-green">{{ T.fData }}</a></div>
+      </div>
+    </div>
+    <div class="r-wrap" style="display:flex;justify-content:space-between;align-items:center;gap:24px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.12);font-size:12px;color:rgba(255,255,255,0.5)">
+      <span>© 2026 DG Expertise SA</span>
+      <div class="r-wrap" style="display:flex;gap:24px"><a href="#locations">{{ T.lblLoc }}</a><a dgLink="./Qui-sommes-nous.dc.html">{{ T.lnkTeam }}</a><a href="#figures">{{ T.lnkFig }}</a><a dgLink="./Qui-sommes-nous.dc.html">{{ T.fSocial }}</a><a dgLink="./Actualites.dc.html">{{ T.nPress }}</a><a dgLink="./Contact.dc.html">{{ T.fContacts }}</a></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+/* Service cards on the white band: lift + coloured border/arrow on hover */
+.svc-card{display:flex;flex-direction:column;gap:20px;padding:32px 28px 28px;background:#F6F6F6;border:1px solid rgba(26,26,26,0.08);position:relative;transition:transform .45s cubic-bezier(.2,.8,.2,1),border-color .3s,background .3s}
+.svc-card:hover{transform:translateY(-6px);background:#fff}
+.svc-card.green:hover{border-color:#A6CE00}
+.svc-card.blue:hover{border-color:#0075D6}
+.svc-card .arrow{width:40px;height:40px;border-radius:50%;border:1px solid rgba(26,26,26,0.25);display:grid;place-items:center;font-size:15px;transition:background .3s,color .3s,border-color .3s}
+.svc-card.green .arrow:hover{background:#A6CE00;border-color:#A6CE00;color:#1A1A1A}
+.svc-card.blue .arrow:hover{background:#0075D6;border-color:#0075D6;color:#1A1A1A}
+.chip{font-size:12px;padding:5px 10px;border-radius:999px;border:1px solid rgba(26,26,26,0.18);color:rgba(26,26,26,0.75)}
+
+.hero-pill{display:inline-flex;align-items:center;gap:12px;padding:12px 22px;border-radius:999px;border:1px solid rgba(255,255,255,0.35);color:#fff;font-size:15px;backdrop-filter:blur(12px);transition:border-color .3s,background .3s}
+.hero-pill:hover{border-color:#fff;background:rgba(255,255,255,0.08)}
+
+.rv-prev{width:32px;height:32px;border-radius:50%;border:1px solid rgba(26,26,26,0.2);background:transparent;color:#1A1A1A;font-size:13px;cursor:pointer;display:grid;place-items:center}
+.rv-prev:hover{background:#1A1A1A;color:#fff}
+.rv-next{width:32px;height:32px;border-radius:50%;border:0;background:#1A1A1A;color:#fff;font-size:13px;cursor:pointer;display:grid;place-items:center}
+.rv-next:hover{background:#A6CE00;color:#1A1A1A}
+
+.logo-cell{flex-shrink:0;height:120px;padding:0 44px;display:grid;place-items:center;border-right:1px solid rgba(26,26,26,0.1)}
+.logo-cell img{width:auto;filter:grayscale(1);opacity:0.6;transition:filter .4s,opacity .4s,transform .4s}
+.logo-cell img:hover{filter:grayscale(0);opacity:1;transform:scale(1.06)}
+
+.dir-link{font-size:14px;line-height:1.35;color:rgba(255,255,255,0.65);display:flex;gap:8px;align-items:baseline;transition:color .25s}
+.dir-link:hover{color:#fff}
+
+.fig-num{font-weight:700;font-size:clamp(67px,11.111vw,160px);line-height:0.85;letter-spacing:-0.05em;font-variant-numeric:tabular-nums}
+
+/* Google score in the hero review card */
+.g-score{display:flex;align-items:center;gap:6px;font-size:13px;color:#1A1A1A}
+.g-score:hover{color:#0075D6}
+.g-score .cnt{color:rgba(26,26,26,0.55)}
+.stars{position:relative;display:inline-block;letter-spacing:1px;color:rgba(26,26,26,0.18)}
+.stars .fill{position:absolute;left:0;top:0;overflow:hidden;white-space:nowrap;color:#FBBC05}
+.rv-text{animation:rvIn .5s cubic-bezier(.16,1,.3,1) both}
+@keyframes rvIn{from{opacity:0;translate:0 8px}}
+
+/* press category tabs (real article categories) */
+.ptab{padding:8px 16px;border-radius:999px;border:1px solid rgba(26,26,26,0.2);background:transparent;color:#1A1A1A;font:400 13px Inter,sans-serif;cursor:pointer;transition:background .25s,color .25s,border-color .25s}
+.ptab:hover{border-color:#1A1A1A}
+.ptab.on{background:#1A1A1A;color:#fff;border-color:#1A1A1A}

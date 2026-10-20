@@ -1,0 +1,200 @@
+/* DG Expertise — global styles ported from the .dc.html design files */
+body{margin:0;background:#1A1A1A;font-family:Inter,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+/* zero specificity so component/class colours win, matching the inline-style precedence of the design */
+:where(a:hover){color:#A6CE00}
+*{box-sizing:border-box}
+input,select,textarea{font-family:Inter,sans-serif}
+
+@keyframes dgArrow{0%,100%{transform:translateX(0)}45%{transform:translateX(160%)}50%{transform:translateX(-160%)}}
+@keyframes dgShine{0%{transform:translateX(-120%)}40%,100%{transform:translateX(120%)}}
+@keyframes dgMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes dgPing{0%{transform:scale(.6);opacity:.9}100%{transform:scale(2.2);opacity:0}}
+@keyframes dgSway{0%,100%{transform:rotate(-0.5deg)}50%{transform:rotate(0.5deg)}}
+@keyframes dgKen{0%{transform:scale(1) translate(0,0) rotate(-0.4deg)}50%{transform:scale(1.06) translate(-1.5%,1%) rotate(0.2deg)}100%{transform:scale(1.03) translate(1%,-0.5%) rotate(0.5deg)}}
+@keyframes dgSweep{0%{transform:translateX(-100%)}35%,100%{transform:translateX(100%)}}
+@keyframes dgOrbit{0%{transform:translate(0,0)}25%{transform:translate(14px,-10px)}50%{transform:translate(0,-20px)}75%{transform:translate(-14px,-10px)}100%{transform:translate(0,0)}}
+@keyframes dgRise{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Primary CTA pill (green, animated arrow + shine) ── */
+.dg-cta{position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:14px;padding:6px 6px 6px 24px;border-radius:999px;background:#A6CE00;color:#1A1A1A;font-size:15px;font-weight:600;transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s}
+.dg-cta:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(166,206,0,0.35);color:#1A1A1A}
+.dg-cta-label{position:relative;z-index:1}
+.dg-cta-arrow{position:relative;z-index:1;width:40px;height:40px;border-radius:50%;background:#1A1A1A;color:#A6CE00;display:grid;place-items:center;font-size:15px;overflow:hidden}
+.dg-cta-arrow>span{display:inline-block;animation:dgArrow 2.4s cubic-bezier(.65,0,.35,1) infinite}
+.dg-cta-shine{position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,0.45) 50%,transparent 70%);transform:translateX(-120%);animation:dgShine 3.2s ease-in-out infinite}
+
+/* ── Pinging green dot ── */
+.dg-ping{position:relative;width:8px;height:8px;border-radius:50%;background:#A6CE00;flex-shrink:0}
+.dg-ping::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:1px solid #A6CE00;animation:dgPing 2s ease-out infinite}
+
+/* ── Status dot with halo (hero eyebrows) ── */
+.dg-dot{width:8px;height:8px;border-radius:50%;background:#A6CE00;box-shadow:0 0 0 4px rgba(166,206,0,0.25);flex-shrink:0}
+
+/* ── Ghost pills ── */
+.dg-ghost{display:inline-flex;align-items:center;gap:12px;padding:12px 22px;border-radius:999px;border:1px solid rgba(255,255,255,0.35);color:#fff;font-size:15px;backdrop-filter:blur(12px);transition:border-color .3s,background .3s}
+.dg-ghost:hover{border-color:#fff;background:rgba(255,255,255,0.08);color:#fff}
+.dg-ghost-dim{display:inline-flex;align-items:center;gap:12px;padding:12px 22px;border-radius:999px;border:1px solid rgba(255,255,255,0.3);color:#fff;font-size:15px;transition:border-color .3s,background .3s}
+.dg-ghost-dim:hover{border-color:#fff;background:rgba(255,255,255,0.06);color:#fff}
+.dg-ghost-light{display:inline-flex;align-items:center;gap:12px;padding:12px 22px;border-radius:999px;border:1px solid rgba(26,26,26,0.25);color:#1A1A1A;font-size:15px;transition:border-color .3s,background .3s}
+.dg-ghost-light:hover{border-color:#1A1A1A;background:rgba(26,26,26,0.04);color:#1A1A1A}
+
+/* ── Circle-arrow text link ── */
+.dg-clink{display:flex;gap:12px;align-items:center}
+.dg-clink>i{font-style:normal;width:32px;height:32px;border:1px solid rgba(255,255,255,0.35);border-radius:50%;display:grid;place-items:center;font-size:13px}
+.dg-clink.on-light>i{border-color:rgba(26,26,26,0.3)}
+
+/* ── Eyebrow label ── */
+.dg-label{font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.5)}
+.dg-label.on-light{color:rgba(26,26,26,0.55)}
+
+/* ── Dark CTA pill (inside green bands) ── */
+.dg-dark-pill{display:inline-flex;align-items:center;gap:14px;padding:6px 6px 6px 28px;border-radius:999px;background:#1A1A1A;color:#fff;font-size:16px;font-weight:600;transition:transform .3s}
+.dg-dark-pill:hover{transform:translateY(-2px);color:#fff}
+.dg-dark-pill>i{font-style:normal;width:44px;height:44px;border-radius:50%;background:#A6CE00;color:#1A1A1A;display:grid;place-items:center;font-size:16px}
+
+/* ── One-off hover helpers (override inline styles, like the design runtime's style-hover) ── */
+.hv-green:hover{color:#A6CE00!important}
+.hv-white:hover{color:#fff!important}
+.hv-blue:hover{color:#0075D6!important}
+.hv-ink:hover{color:#1A1A1A!important}
+.hv-lift:hover{border-color:#A6CE00!important;transform:translateY(-4px)!important}
+.hv-lift-blue:hover{border-color:#0075D6!important;transform:translateY(-4px)!important}
+.hv-border-green:hover{border-color:#A6CE00!important}
+.hv-social:hover{background:#A6CE00!important;border-color:#A6CE00!important;color:#1A1A1A!important}
+.hv-fill-green:hover{background:#A6CE00!important;border-color:#A6CE00!important;color:#1A1A1A!important}
+.hv-bg-white:hover{background:#fff!important}
+.hv-menu:hover{background:rgba(166,206,0,0.12)!important;color:#A6CE00!important}
+
+/* ══════════════════════════════════════════════════════════════════
+   Responsive layer. Desktop (≥1440px) renders exactly as designed;
+   gutters, section spacing and display type scale down from there.
+   Layout classes override inline grid styles, hence !important.
+   ══════════════════════════════════════════════════════════════════ */
+:root{--gx:64px;--k:1;--g64:64px}
+html,body{overflow-x:hidden}
+img,video,iframe{max-width:100%}
+@media (max-width:1024px){:root{--gx:40px;--k:.75;--g64:48px}}
+@media (max-width:640px){:root{--gx:20px;--k:.6;--g64:32px}}
+
+/* grids */
+@media (max-width:1200px){
+  .r-g6{grid-template-columns:repeat(3,minmax(0,1fr))!important;row-gap:40px!important}
+  .r-offices{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;height:auto!important}
+  .r-offices>*{min-height:240px}
+  .r-offices>:first-child{min-height:220px}
+  .r-offices>:last-child{min-height:0}
+}
+@media (max-width:1024px){
+  .r-g3{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .r-g4{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .r-g5{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  .r-footer{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}
+  .r-gallery{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-auto-rows:200px!important}
+  .r-hide-touch{display:none!important}
+}
+@media (max-width:900px){
+  .r-split{grid-template-columns:minmax(0,1fr)!important}
+  .r-split>*{order:0!important}
+  .r-g2{grid-template-columns:minmax(0,1fr)!important}
+  .r-static{position:static!important}
+  .r-start{align-items:flex-start!important}
+  .r-auto-h{height:auto!important;padding-top:calc(96px*var(--k))}
+  .r-auto-h>:last-child{max-width:520px;width:100%;margin:0 auto}
+  .r-media{min-height:440px!important}
+  .r-map{height:400px!important}
+  .r-press{grid-template-columns:40px minmax(0,1fr) 40px!important;gap:16px!important;padding:24px 20px!important;margin:0 -20px!important}
+  .r-press>:nth-child(3){display:none!important}
+  .r-press>:nth-child(2){font-size:20px!important}
+  .r-press>:nth-child(4){width:40px!important;height:40px!important}
+}
+@media (max-width:640px){
+  .r-g3,.r-g4,.r-footer,.r-offices{grid-template-columns:minmax(0,1fr)!important}
+  .r-g5,.r-g6{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .r-g2s{grid-template-columns:minmax(0,1fr)!important}
+  .r-card{grid-template-columns:minmax(0,1fr)!important}
+  .r-card>:last-child{min-height:200px;order:-1}
+  .r-gallery{grid-auto-rows:150px!important}
+  .r-media{min-height:340px!important}
+  .r-map{height:320px!important}
+  .r-trust{flex-wrap:wrap!important;gap:16px!important}
+  .r-trust>:first-child{width:100%}
+  .r-trust>:last-child{flex-basis:100%}
+}
+
+/* flex rows that must wrap instead of overflowing */
+.r-wrap{flex-wrap:wrap}
+
+/* heroes: fixed desktop height becomes content-driven on small screens */
+@media (max-width:1024px){
+  .r-hero{height:auto!important;min-height:640px;display:flex;flex-direction:column;justify-content:flex-end}
+  .r-hero-body{position:relative!important;left:auto!important;right:auto!important;bottom:auto!important;padding:150px var(--gx) 56px;gap:32px!important}
+}
+@media (max-width:900px){
+  .r-hero-body.r-split,.r-hero-body{grid-template-columns:minmax(0,1fr)!important}
+}
+@media (max-width:640px){
+  .r-hero{min-height:100svh}
+  .r-hero-body{padding:120px var(--gx) 40px}
+}
+
+/* fluid buttons on small phones */
+@media (max-width:400px){
+  .dg-cta{padding-left:18px;font-size:14px}
+  .dg-ghost,.dg-ghost-dim,.dg-ghost-light{padding:11px 16px;font-size:14px}
+  .dg-dark-pill{padding-left:20px;font-size:15px}
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   Motion layer (driven by core/motion.service.ts + shared/cursor)
+   ══════════════════════════════════════════════════════════════════ */
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+.lenis.lenis-stopped{overflow:clip}
+
+/* custom cursor hides the native one, except on form fields */
+html.has-cursor,html.has-cursor *{cursor:none!important}
+html.has-cursor :is(input,textarea,select){cursor:text!important}
+html.has-cursor select{cursor:pointer!important}
+
+/* scroll reveal — uses the independent `translate` property so it never fights hover transforms */
+@keyframes dgReveal{from{opacity:0;translate:0 56px}to{opacity:1;translate:0 0}}
+@keyframes dgWipe{from{clip-path:inset(0 0 100% 0 round 16px)}to{clip-path:inset(0 0 0 0 round 0)}}
+@keyframes dgHeroIn{from{opacity:0;translate:0 48px;filter:blur(8px)}to{opacity:1;translate:0 0;filter:blur(0)}}
+.motion-on .rv{opacity:0}
+.motion-on .rv.rv-in{opacity:1;animation:dgReveal 1s cubic-bezier(.16,1,.3,1) both;animation-delay:var(--rv-d,0ms)}
+.motion-on .rv.rv-clip.rv-in{animation:dgWipe 1.2s cubic-bezier(.77,0,.18,1) both;animation-delay:var(--rv-d,0ms)}
+.motion-on .rv.rv-clip.rv-in image-slot{animation:dgZoomOut 1.6s cubic-bezier(.16,1,.3,1) both;animation-delay:var(--rv-d,0ms)}
+@keyframes dgZoomOut{from{scale:1.3}}
+.motion-on .hero-in{animation:dgHeroIn 1.1s cubic-bezier(.16,1,.3,1) both;animation-delay:var(--hi-d,0ms)}
+
+/* scroll progress */
+.scroll-progress{position:fixed;left:0;top:0;right:0;height:2px;background:#A6CE00;transform-origin:0 50%;transform:scaleX(0);z-index:1500;pointer-events:none}
+
+/* page transitions (Router view transitions) */
+@keyframes vtOut{to{opacity:0;translate:0 -24px}}
+@keyframes vtIn{from{opacity:0;translate:0 32px}}
+::view-transition-old(root){animation:vtOut .35s cubic-bezier(.4,0,1,1) both}
+::view-transition-new(root){animation:vtIn .6s cubic-bezier(.16,1,.3,1) both}
+
+@media (prefers-reduced-motion: reduce){
+  ::view-transition-old(root),::view-transition-new(root){animation:none}
+}
+
+/* service icons (shared/icons.ts) */
+.ic{width:100%;height:100%;display:block;overflow:visible}
+@keyframes icDraw{to{stroke-dashoffset:0}}
+@keyframes icFade{from{opacity:0;scale:.6}}
+.ic-draw :is(path,circle,rect:not([fill])){stroke-dasharray:100;stroke-dashoffset:100;animation:icDraw .8s cubic-bezier(.65,0,.35,1) forwards}
+.ic-draw :is(text,rect[fill]){transform-box:fill-box;transform-origin:center;animation:icFade .45s .2s both}
+
+/* logos/diagrams on light cards: blend their own off-white backgrounds into the card */
+.graphic image-slot img{mix-blend-mode:multiply}
+
+/* hero readability: darken behind the text column (left), much stronger on small screens */
+.hero-shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(26,26,26,0.72) 0%,rgba(26,26,26,0.45) 38%,rgba(26,26,26,0) 70%)}
+@media (max-width:900px){
+  .hero-shade{background:linear-gradient(180deg,rgba(26,26,26,0.55) 0%,rgba(26,26,26,0.7) 45%,rgba(26,26,26,0.9) 100%)}
+  .r-hero-body h1{line-height:1.02!important}
+}
