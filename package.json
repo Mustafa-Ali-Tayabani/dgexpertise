@@ -1,0 +1,11 @@
+{
+  "name": "dgexpertise",
+  "private": true,
+  "description": "DG Expertise website — the Angular app is in web/ (see vercel.json).",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "build": "npm run build --prefix web"
+  }
+}
