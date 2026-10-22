@@ -64,3 +64,10 @@ The header button opens a 4-step booking panel (`src/app/shared/booking/`): serv
 ## Google reviews
 
 `src/app/core/reviews.service.ts` shows all 5★ Google reviews (homepage card + Expertise page) and the live rating/count, read from the reviews Worker in `../reviews-worker` (setup guide in its README). Until `feed` is set in `src/app/data/google-reviews.ts`, the three real reviews quoted on dgexpertise.ch and the 4.6 / 25 score are used.
+
+## Passcode (site preview lock)
+
+`middleware.js` (Vercel Routing Middleware) locks the whole deployed site — pages, images and data — behind a passcode page.
+- Set **`SITE_PASSCODE`** in Vercel → Project → Settings → Environment Variables (Production, and Preview if wanted), then redeploy.
+- Visitors who enter it get a secure cookie valid 30 days. Changing the passcode logs everyone out.
+- Remove the variable (and redeploy) to open the site to the public. Local `ng serve` is never locked.
